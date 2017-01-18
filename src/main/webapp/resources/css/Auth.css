@@ -1,0 +1,29 @@
+#email, #username, #password, #passwordConfirm, #code {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    width: 100%;
+    font-size: 24px;
+    border: none;
+    border-bottom: 3px solid darkgreen;
+    background-color: transparent;
+    outline: none;
+}
+
+.button {
+    margin: 10px auto;
+    padding: 5px;
+    width: auto;
+    text-align: center;
+    font-size: 24px;
+    cursor: pointer;
+    color: ghostwhite;
+    background-color: lightseagreen;
+    border-radius: 5px;
+    box-shadow: 1px 2px 1px 0 darkgreen;
+}
+
+.button:active {
+    background-color: darkgreen;
+}

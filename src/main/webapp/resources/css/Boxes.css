@@ -1,0 +1,31 @@
+.loginBox, .newsBox, .centerBox {
+    top: 27px;
+    position: absolute;
+    padding: 10px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.centerBox, .loginBox {
+    box-shadow: 0 0 0 7px #90CDAF;
+    border-radius: 5px;
+    width: 15%;
+}
+
+.loginBox {
+    right: 0;
+    margin-right: 10%;
+}
+
+.newsBox {
+    left: 0;
+    margin-left: 10%;
+    box-shadow: 0 0 0 3px lightgray;
+    border-radius: 3px;
+    width: 60%;
+}
+
+.centerBox {
+    position: relative;
+    margin: 0 auto;
+}
