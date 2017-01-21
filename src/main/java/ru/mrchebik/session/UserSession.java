@@ -15,6 +15,7 @@ import java.util.List;
 public class UserSession {
     private static String code;
     private static int pages;
+    private static int count = 10;
     private static String email;
 
     public static String getCode() {
@@ -29,8 +30,8 @@ public class UserSession {
         return pages;
     }
 
-    public static void setPages(List<Post> posts) {
-        pages = BigDecimal.valueOf((double) posts.size() / 10).setScale(0, BigDecimal.ROUND_CEILING).intValue();
+    public static void setPages(List<Post> posts, int count) {
+        pages = BigDecimal.valueOf((double) posts.size() / count).setScale(0, BigDecimal.ROUND_CEILING).intValue();
     }
 
     public static String getEmail() {
@@ -39,5 +40,13 @@ public class UserSession {
 
     public static void setEmail(String email) {
         UserSession.email = email;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        UserSession.count = count;
     }
 }

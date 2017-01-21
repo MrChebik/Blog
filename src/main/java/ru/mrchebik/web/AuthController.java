@@ -37,14 +37,20 @@ public class AuthController {
     @RequestMapping(value = "/register", method = POST)
     public String registration(@ModelAttribute("userForm") User userForm,
                                Model model) {
-        try {
-            userService.add(userForm);
-        } catch (Exception e) {
-            model.addAttribute("error", "SQLError");
+        if (userForm.getUsername().equalsIgnoreCase("admin")) {
+            model.addAttribute("error", "AdminError");
+        } else {
+            String password;
+            try {
+                password = userForm.getPassword();
+                userService.add(userForm);
+            } catch (Exception e) {
+                model.addAttribute("error", "SQLError");
 
-            return "SignUp";
+                return "SignUp";
+            }
+            securityService.autologin(userForm.getUsername(), password);
         }
-        securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
         return "redirect:/blog/";
     }
@@ -88,7 +94,7 @@ public class AuthController {
         if (UserSession.getCode().equalsIgnoreCase(code)) {
             userService.changePassword(UserSession.getEmail(), password);
             User currentUser = userService.findByEmail(UserSession.getEmail());
-            securityService.autologin(currentUser.getUsername(), currentUser.getPasswordConfirm());
+            securityService.autologin(currentUser.getUsername(), password);
         } else {
             return "redirect:/";
         }

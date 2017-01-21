@@ -4,16 +4,24 @@ body {
     margin: 0;
 }
 
-.top {
-    color: crimson;
-    font-size: 8em;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px black;
+.top, .footer {
     text-align: center;
 }
 
-.center {
+.top, .center {
     position: relative;
+}
+
+.top, .center, .footer {
+    width: 100%;
+}
+
+.top {
+    height: 175px;
+    color: #FF0033;
+    font-size: 8em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
 }
 
 .news {
@@ -26,10 +34,16 @@ p {
 
 .header {
     font-size: 32px;
-    color: lightgray;
+    color: #CCCCCC;
     text-shadow: 1px 1px 1px black;
 }
 
 form {
     margin-bottom: 0;
+}
+
+.footer {
+    color: #333333;
+    position: absolute;
+    bottom: 10px;
 }

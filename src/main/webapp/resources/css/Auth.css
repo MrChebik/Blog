@@ -6,7 +6,7 @@
     width: 100%;
     font-size: 24px;
     border: none;
-    border-bottom: 3px solid darkgreen;
+    border-bottom: 3px solid #006633;
     background-color: transparent;
     outline: none;
 }
@@ -19,11 +19,11 @@
     font-size: 24px;
     cursor: pointer;
     color: ghostwhite;
-    background-color: lightseagreen;
+    background-color: #00CC99;
     border-radius: 5px;
-    box-shadow: 1px 2px 1px 0 darkgreen;
+    box-shadow: 1px 2px 1px 0 #006633;
 }
 
 .button:active {
-    background-color: darkgreen;
+    background-color: #006633;
 }

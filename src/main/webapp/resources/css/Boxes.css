@@ -1,31 +1,61 @@
 .loginBox, .newsBox, .centerBox {
-    top: 27px;
-    position: absolute;
+    top: 0;
     padding: 10px;
-    margin-top: 5px;
+}
+
+.loginBox, .centerBox {
     text-align: center;
 }
 
+.loginBox, .newsBox, .postsBox, .categoryBox {
+    position: absolute;
+}
+
 .centerBox, .loginBox {
-    box-shadow: 0 0 0 7px #90CDAF;
+    box-shadow: 0 0 0 7px #66CC99;
     border-radius: 5px;
     width: 15%;
 }
 
-.loginBox {
+.loginBox, .categoryBox {
     right: 0;
     margin-right: 10%;
+}
+
+.categoryBox {
+    top: 20px;
 }
 
 .newsBox {
     left: 0;
     margin-left: 10%;
-    box-shadow: 0 0 0 3px lightgray;
+    box-shadow: 0 0 0 3px #9999CC;
     border-radius: 3px;
     width: 60%;
 }
 
-.centerBox {
+.postsBox {
+    top: 0;
+    left: 0;
+    margin-left: 10%;
+    width: 80%;
+}
+
+.centerBox, .postCreateBox {
     position: relative;
     margin: 0 auto;
+}
+
+.categoryBox {
+    padding: 10px;
+}
+
+.postsBox {
+    top: 40px;
+    margin-top: 20px;
+}
+
+.postCreateBox {
+    margin-top: 20px;
+    width: 80%;
 }

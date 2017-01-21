@@ -19,14 +19,19 @@
 <div class="top">
     Blog <span class="header">Check Code</span>
 </div>
-<div class="center centerBox">
-    <form id="form1" method="post">
-        <input id="code" type="text" name="code" required placeholder="Code" oninput="check('code')">
-        <div class="button" onclick="checkError()">
-            Send
-        </div>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-    </form>
+<div class="center">
+    <div class="centerBox">
+        <form id="form1" method="post">
+            <input id="code" type="text" name="code" required placeholder="Code" oninput="check('code')">
+            <div class="button" onclick="checkError()">
+                Send
+            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        </form>
+    </div>
+</div>
+<div class="footer">
+    © 2017 Blog
 </div>
 </body>
 </html>

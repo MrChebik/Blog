@@ -15,19 +15,43 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/Auth.js"/>"></script>
     <c:if test="${principal != null}">
+        <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
         <style type="text/css">
-            .right {
+            .loginBox {
                 display: none;
             }
 
-            .left {
+            .newsBox {
+                margin-top: 25px;
                 width: 80%;
+            }
+
+            .top {
+                display: block !important;
+            }
+
+            .topMain {
+                display: none !important;
             }
         </style>
     </c:if>
 </head>
 <body>
-    <div class="top">
+    <div class="top" style="display: none">
+        <div class="blog">
+            Blog
+        </div>
+        <div class="bar">
+            <ul id="navbar">
+                <li onclick="window.location.href='/blog/';"><span>Home</span></li>
+                <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
+                <li onclick="window.location.href='/blog/news';"><span>News</span></li>
+                <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
+                <li onclick="window.location.href='/blog/logout/';"><span>Logout</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="top topMain">
         Blog
     </div>
     <div class="center">
@@ -35,9 +59,10 @@
             <span class="news">News</span>
             <hr>
             <p>
-                15.01.17 -- Created a local structure of classes.<br>
-                16.01.17 -- Added an authorization.<br>
+                21.01.17 -- Added the ability to add posts.<br>
                 17.01.17 -- Added a password recovery by email.<br>
+                16.01.17 -- Added an authorization.<br>
+                15.01.17 -- Created a local structure of classes.
             </p>
         </div>
         <div class="loginBox">
@@ -58,6 +83,9 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </form>
         </div>
+    </div>
+    <div class="footer">
+        © 2017 Blog
     </div>
 </body>
 </html>

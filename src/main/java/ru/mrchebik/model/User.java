@@ -21,8 +21,6 @@ public class User {
     @Column(nullable = false, length = 60)
     private String password;
 
-    private String passwordConfirm;
-
     @Column(unique = true, nullable = false, length = 60)
     private String email;
 
@@ -47,7 +45,6 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.passwordConfirm = password;
     }
 
     public long getUserId() {
@@ -72,14 +69,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 
     public Set<Post> getPosts() {

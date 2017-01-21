@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: mrchebik
@@ -9,15 +10,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>The Blog</title>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/default.css"/>"/>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
+    <style type="text/css">
+        .postsBox {
+            width: 80%;
+        }
+    </style>
 </head>
 <body>
-<h1>Blog</h1>
-<div class="center">
-    <div class="topBox">
-        Profile | Logout
+<div class="top">
+    <div class="blog">
+        Blog
     </div>
-    <div class="centerBox">
+    <div class="bar">
+        <ul id="navbar">
+            <li onclick="window.location.href='/blog/';"><span>Home</span></li>
+            <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
+            <li onclick="window.location.href='/blog/news';"><span>News</span></li>
+            <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
+            <li onclick="window.location.href='/blog/logout/';"><span>Logout</span></li>
+        </ul>
+    </div>
+</div>
+<div class="center">
+    <div class="menu">
+        <div class="addButton" onclick="window.location.href='/blog/add'">
+            Add post
+        </div>
+    </div>
+    <div class="postsBox">
         <c:choose>
             <c:when test="${posts.size() == 0}" >
                 <b>You do not have any posts</b>
@@ -26,14 +50,17 @@
                 <form id="form1" method="get">
                     <table>
                         <tr>
+                            <th>№</th>
                             <th>Title</th>
                             <th>Text</th>
+                            <th>Date</th>
                         </tr>
-                        <c:forEach items="${notes}" var="note" >
-                            <tr>
-                                <td>${note.title}</td>
-                                <td>${note.text}</td>
-                                <td><span class="fake-link" id="${note.id}" onclick="submitData(this.id, '0071')">Remove</span></td>
+                        <c:forEach items="${posts}" var="post" >
+                            <tr onclick="window.location.href='/blog/post/${post.postId}'">
+                                <td>${posts.indexOf(post) + 1}</td>
+                                <td>${post.title}</td>
+                                <td>${post.text}</td>
+                                <td>${post.date}</td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -68,6 +95,9 @@
             </c:otherwise>
         </c:choose>
     </div>
+</div>
+<div class="footer">
+    © 2017 Blog
 </div>
 </body>
 </html>

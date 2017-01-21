@@ -19,15 +19,20 @@
 <div class="top">
     Blog <span class="header">New Password</span>
 </div>
-<div class="center centerBox">
-    <form id="form1" method="post">
-        <input id="password" type="password" name="password" required placeholder="Password" oninput="check('password')">
-        <input id="passwordConfirm" type="password" name="passwordConfirm" required placeholder="Password Confirm" oninput="check('passwordConfirm')">
-        <div class="button" onclick="checkError()">
-            Send
-        </div>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-    </form>
+<div class="center">
+    <div class="centerBox">
+        <form id="form1" method="post">
+            <input id="password" type="password" name="password" required placeholder="Password" oninput="check('password')">
+            <input id="passwordConfirm" type="password" name="passwordConfirm" required placeholder="Password Confirm" oninput="check('passwordConfirm')">
+            <div class="button" onclick="checkError()">
+                Send
+            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        </form>
+    </div>
+</div>
+<div class="footer">
+    © 2017 Blog
 </div>
 </body>
 </html>

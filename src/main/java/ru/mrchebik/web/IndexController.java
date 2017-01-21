@@ -15,7 +15,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Controller
 @RequestMapping("/")
 public class IndexController {
-    @RequestMapping(method = GET)
+    @RequestMapping(value = {"", "blog/news"}, method = GET)
     public String indexPage(@RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "logout", required = false) String logout,
                             Principal principal,
@@ -30,6 +30,6 @@ public class IndexController {
             model.addAttribute(logout);
         }
 
-        return "index";
+        return "News";
     }
 }

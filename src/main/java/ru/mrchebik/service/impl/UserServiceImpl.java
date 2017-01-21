@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     public void changePassword(String email, String password) {
         String bcrypt = bCryptPasswordEncoder.encode(password);
         User user = userRepository.findByEmail(email);
-        userRepository.changePassword(user.getUserId(), bcrypt, password);
+        userRepository.changePassword(user.getUserId(), bcrypt);
     }
 
     @Override
