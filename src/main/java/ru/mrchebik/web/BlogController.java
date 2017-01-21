@@ -80,8 +80,6 @@ public class BlogController {
     public String addPost(@RequestParam(value = "title") String title,
                           @RequestParam(value = "text") String text,
                           Principal principal) {
-        System.out.println(text);
-        System.out.println(title);
         postService.add(new Post(userService.findUser(principal.getName()), title, text, new Date()));
 
         return "redirect:/blog/";
