@@ -47,3 +47,16 @@ form {
     position: absolute;
     bottom: 10px;
 }
+
+hr {
+    color: #555;
+    background-color:#555;
+    border:0 none;
+    height:1px;
+    clear:both;
+}
+
+hr[class="date"] {
+    color: lightgray;
+    background-color: lightgray;
+}

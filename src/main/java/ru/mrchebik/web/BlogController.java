@@ -2,6 +2,7 @@ package ru.mrchebik.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mrchebik.model.Post;
@@ -77,11 +78,21 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/add", method = POST)
-    public String addPost(@RequestParam(value = "title") String title,
-                          @RequestParam(value = "text") String text,
+    public String addPost(@RequestParam String title,
+                          @RequestParam String text,
                           Principal principal) {
         postService.add(new Post(userService.findUser(principal.getName()), title, text, new Date()));
 
         return "redirect:/blog/";
+    }
+
+    @RequestMapping(value = "/{username}/post/{id}", method = GET)
+    public String postPage(@PathVariable long id,
+                           @PathVariable String username,
+                           Model model) {
+        model.addAttribute("username", username);
+        model.addAttribute("post", postService.findPost(id));
+
+        return "Post";
     }
 }

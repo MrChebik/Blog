@@ -42,6 +42,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Post findPost(long id) {
+        return postRepository.findOne(id);
+    }
+
+    @Override
     public void remove(long id) {
         postRepository.delete(id);
     }

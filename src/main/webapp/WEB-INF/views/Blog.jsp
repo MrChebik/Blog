@@ -56,7 +56,7 @@
                             <th>Date</th>
                         </tr>
                         <c:forEach items="${posts}" var="post" >
-                            <tr onclick="window.location.href='/blog/post/${post.postId}'">
+                            <tr onclick="window.location.href='/blog/${username}/post/${post.postId}'">
                                 <td>${posts.indexOf(post) + 1}</td>
                                 <td>${post.title}</td>
                                 <td>${post.text}</td>

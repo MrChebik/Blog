@@ -10,5 +10,6 @@ import java.util.List;
 public interface PostService {
     Post add(Post post);
     List<Post> findPosts(long userId);
+    Post findPost(long postId);
     void remove(long id);
 }

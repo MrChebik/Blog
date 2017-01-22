@@ -7,7 +7,7 @@
     text-align: center;
 }
 
-.loginBox, .newsBox, .postsBox, .categoryBox {
+.loginBox, .newsBox, .postsBox, .postBox {
     position: absolute;
 }
 
@@ -17,7 +17,7 @@
     width: 15%;
 }
 
-.loginBox, .categoryBox {
+.loginBox {
     right: 0;
     margin-right: 10%;
 }
@@ -34,8 +34,7 @@
     width: 60%;
 }
 
-.postsBox {
-    top: 0;
+.postsBox, .postBox {
     left: 0;
     margin-left: 10%;
     width: 80%;
@@ -46,10 +45,6 @@
     margin: 0 auto;
 }
 
-.categoryBox {
-    padding: 10px;
-}
-
 .postsBox {
     top: 40px;
     margin-top: 20px;
@@ -58,4 +53,28 @@
 .postCreateBox {
     margin-top: 20px;
     width: 80%;
+}
+
+.postBox {
+    top: 25px;
+    padding: 10px;
+    box-shadow: 0 0 0 4px #CCCC00;
+}
+
+.titleBox {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+
+.textBox {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.dateBox {
+    margin-top: 10px;
+    margin-left: 3%;
+    width: 15%;
 }
