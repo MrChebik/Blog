@@ -2,7 +2,6 @@ package ru.mrchebik.session;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.mrchebik.model.Post;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,8 +29,8 @@ public class UserSession {
         return pages;
     }
 
-    public static void setPages(List<Post> posts, int count) {
-        pages = BigDecimal.valueOf((double) posts.size() / count).setScale(0, BigDecimal.ROUND_CEILING).intValue();
+    public static void setPages(List list, int count) {
+        pages = BigDecimal.valueOf((double) list.size() / count).setScale(0, BigDecimal.ROUND_CEILING).intValue();
     }
 
     public static String getEmail() {

@@ -60,3 +60,14 @@ hr[class="date"] {
     color: lightgray;
     background-color: lightgray;
 }
+
+.comment {
+    margin: 5px;
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+
+.commentDate {
+    margin-left: 8px;
+}
+

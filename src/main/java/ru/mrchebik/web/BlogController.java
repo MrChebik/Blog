@@ -5,7 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.mrchebik.model.Comment;
 import ru.mrchebik.model.Post;
+import ru.mrchebik.service.CommentService;
 import ru.mrchebik.service.PostService;
 import ru.mrchebik.service.UserService;
 import ru.mrchebik.session.UserSession;
@@ -29,6 +31,8 @@ public class BlogController {
     private PostService postService;
     @Resource
     private UserService userService;
+    @Resource
+    private CommentService commentService;
 
     @RequestMapping(value = "/", method = GET)
     public String notes(@RequestParam(value = "hide", defaultValue = "1") int page,
@@ -87,12 +91,64 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/{username}/post/{id}", method = GET)
-    public String postPage(@PathVariable long id,
+    public String postPage(@PathVariable String id,
                            @PathVariable String username,
+                           @RequestParam(value = "hide", defaultValue = "1") int page,
+                           @RequestParam(value = "hideId", defaultValue = "0") long commentId,
+                           Principal principal,
                            Model model) {
+        int idFromString = Integer.parseInt(id);
+
         model.addAttribute("username", username);
-        model.addAttribute("post", postService.findPost(id));
+        try {
+            model.addAttribute("user", userService.findUser(principal.getName()));
+        } catch (Exception ignored) {
+        }
+        model.addAttribute("post", postService.findPost(idFromString));
+
+        List<Comment> comments = new ArrayList<>(commentService.findComments(idFromString));
+
+        if (commentId != 0) {
+            if (page != 1 &&
+                    page == UserSession.getPages() &&
+                    (UserSession.getPages() * 20) - 19 == comments.size() &&
+                    comments.get(comments.size() - 1).getCommentId() == commentId) {
+                page--;
+                comments.remove(comments.size() - 1);
+            }
+
+            for (int i = 0; i < comments.size(); i++) {
+                if (comments.get(i).getCommentId() == commentId) {
+                    comments.remove(i);
+                    break;
+                }
+            }
+            postService.remove(commentId);
+        }
+
+        UserSession.setPages(comments, 20);
+
+        if (comments.size() > 20) {
+            if (page * 20 > comments.size()) {
+                comments = comments.subList((page - 1) * 20, comments.size());
+            } else {
+                comments = comments.subList((page - 1) * 20, page * 20);
+            }
+        }
+        model.addAttribute("comments", comments);
+        model.addAttribute("page", page);
+        model.addAttribute("pages", UserSession.getPages());
 
         return "Post";
+    }
+
+    @RequestMapping(value = "/{username}/post/{id}", method = POST)
+    public String addComment(@PathVariable String id,
+                             @PathVariable String username,
+                             @RequestParam String text,
+                             Principal principal) {
+        commentService.addComment(new Comment(userService.findUser(principal.getName()), postService.findPost(Integer.parseInt(id)), text, new Date()));
+
+        return "redirect:/blog/" + username + "/post/" + id;
     }
 }

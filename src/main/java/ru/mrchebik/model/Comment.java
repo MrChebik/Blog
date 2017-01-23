@@ -15,16 +15,10 @@ public class Comment {
     private long commentId;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
     private String text;
 
     @Column(nullable = false)
     private Date date;
-
-    @Column(nullable = false)
-    private Date editDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
@@ -34,12 +28,18 @@ public class Comment {
     @JoinColumn(name = "postId", nullable = false)
     private Post post;
 
-    public Comment(User user, String title, String text, Date date, Post post) {
+    public Comment(User user, long commentId, String text, Date date) {
         this.user = user;
-        this.title = title;
+        this.commentId = commentId;
         this.text = text;
         this.date = date;
+    }
+
+    public Comment(User user, Post post, String text, Date date) {
+        this.user = user;
         this.post = post;
+        this.text = text;
+        this.date = date;
     }
 
     public long getCommentId() {
@@ -48,14 +48,6 @@ public class Comment {
 
     public void setCommentId(long commentId) {
         this.commentId = commentId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getText() {
@@ -72,14 +64,6 @@ public class Comment {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Date getEditDate() {
-        return editDate;
-    }
-
-    public void setEditDate(Date editDate) {
-        this.editDate = editDate;
     }
 
     public User getUser() {
