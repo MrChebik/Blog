@@ -37,7 +37,7 @@
 </div>
 <div class="center">
     <div class="menu">
-        <div class="addButton" onclick="window.location.href='/blog/add'">
+        <div class="addButton" onclick="window.location.href='/blog/post/add'">
             Add post
         </div>
     </div>
@@ -97,6 +97,7 @@
     </div>
 </div>
 <div class="footer">
+    <hr class="footer">
     © 2017 Blog
 </div>
 </body>

@@ -53,8 +53,8 @@ span {
 
 .menu {
     position: relative;
-    margin: 20px 0 20px 10%;
     padding: 3px;
+    margin: 20px 0 0 10%;
 }
 
 .addButton {
@@ -82,6 +82,7 @@ table {
 
 th, td {
     padding: 5px;
+    text-align: justify;
 }
 
 tr:nth-child(odd) {
@@ -99,7 +100,7 @@ th:nth-child(1) {
 
 
 th:nth-child(2) {
-    width: 16%;
+    width: 18%;
 }
 
 th:nth-child(4) {

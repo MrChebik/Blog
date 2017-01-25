@@ -34,8 +34,9 @@ public class BlogController {
     @Resource
     private CommentService commentService;
 
-    @RequestMapping(value = "/", method = GET)
-    public String notes(@RequestParam(value = "hide", defaultValue = "1") int page,
+    @RequestMapping(value = { "/", "/{username}" }, method = GET)
+    public String notes(@PathVariable(required = false) String username,
+                        @RequestParam(value = "hide", defaultValue = "1") int page,
                         @RequestParam(value = "hideId", defaultValue = "0") long id,
                         Principal principal,
                         Model model) {
@@ -68,26 +69,22 @@ public class BlogController {
                 posts = posts.subList((page - 1) * UserSession.getCount(), page * UserSession.getCount());
             }
         }
+        model.addAttribute("userBlog", username);
         model.addAttribute("username", principal.getName());
+        for (Post post : posts) {
+            if (post.getText().length() > 500) {
+                post.setText(post.getText().substring(0, 500) + "...");
+            }
+        }
         model.addAttribute("posts", posts);
         model.addAttribute("page", page);
         model.addAttribute("pages", UserSession.getPages());
 
-        return "Blog";
-    }
-
-    @RequestMapping(value = "/add", method = GET)
-    public String addPage() {
-        return "AddPost";
-    }
-
-    @RequestMapping(value = "/add", method = POST)
-    public String addPost(@RequestParam String title,
-                          @RequestParam String text,
-                          Principal principal) {
-        postService.add(new Post(userService.findUser(principal.getName()), title, text, new Date()));
-
-        return "redirect:/blog/";
+        if (username != null) {
+            return "BlogGlobal";
+        } else {
+            return "Blog";
+        }
     }
 
     @RequestMapping(value = "/{username}/post/{id}", method = GET)
@@ -146,9 +143,10 @@ public class BlogController {
     public String addComment(@PathVariable String id,
                              @PathVariable String username,
                              @RequestParam String text,
+                             @RequestParam(value = "hide") int page,
                              Principal principal) {
         commentService.addComment(new Comment(userService.findUser(principal.getName()), postService.findPost(Integer.parseInt(id)), text, new Date()));
 
-        return "redirect:/blog/" + username + "/post/" + id;
+        return "redirect:/blog/" + username + "/post/" + id + "?hide=" + page;
     }
 }

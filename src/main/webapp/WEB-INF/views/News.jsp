@@ -59,6 +59,7 @@
             <span class="news">News</span>
             <hr>
             <p>
+                24.01.17 -- Added the ability to add comments.<br>
                 21.01.17 -- Added the ability to add posts.<br>
                 17.01.17 -- Added a password recovery by email.<br>
                 16.01.17 -- Added an authorization.<br>
@@ -85,6 +86,7 @@
         </div>
     </div>
     <div class="footer">
+        <hr class="footer">
         © 2017 Blog
     </div>
 </body>

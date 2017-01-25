@@ -33,6 +33,7 @@
     </div>
 </div>
 <div class="footer">
+    <hr class="footer">
     © 2017 Blog
 </div>
 </body>

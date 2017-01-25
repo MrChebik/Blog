@@ -14,6 +14,7 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Add.css"/>"/>
+    <script type="text/javascript" src="<c:url value="/resources/js/Title.js"/>"></script>
 </head>
 <body>
 <div class="top">
@@ -31,20 +32,23 @@
     </div>
 </div>
 <div class="center">
-    <div class="postCreateBox">
-        <form id="form1" method="post">
-            <input id="title" type="text" name="title" required placeholder="Title">
-            <textarea id="text" name="text" required placeholder="Text"></textarea>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-        </form>
-    </div>
-    <div class="menu">
-        <div class="addButton" onclick="document.getElementById('form1').submit()">
-            Add post
+    <div class="postsBox">
+        <div class="postCreateBox">
+            <form id="form1" method="post">
+                <input id="title" type="text" name="title" oninput="check(this.id)" placeholder="Title">
+                <textarea id="text" name="text" placeholder="Text"></textarea>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            </form>
+        </div>
+        <div class="menu">
+            <div class="addButton" onclick="checkError()">
+                Add post
+            </div>
         </div>
     </div>
 </div>
 <div class="footer">
+    <hr class="footer">
     © 2017 Blog
 </div>
 </body>

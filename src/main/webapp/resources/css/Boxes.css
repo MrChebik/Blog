@@ -1,14 +1,9 @@
 .loginBox, .newsBox, .centerBox {
-    top: 0;
     padding: 10px;
 }
 
 .loginBox, .centerBox {
     text-align: center;
-}
-
-.loginBox, .newsBox, .postsBox, .postBox {
-    position: absolute;
 }
 
 .centerBox, .loginBox {
@@ -18,16 +13,13 @@
 }
 
 .loginBox {
+    position: absolute;
+    top: 0;
     right: 0;
     margin-right: 10%;
 }
 
-.categoryBox {
-    top: 20px;
-}
-
 .newsBox {
-    left: 0;
     margin-left: 10%;
     box-shadow: 0 0 0 3px #9999CC;
     border-radius: 3px;
@@ -35,19 +27,16 @@
 }
 
 .postsBox, .postBox {
-    left: 0;
     margin-left: 10%;
-    width: 80%;
 }
 
 .centerBox, .postCreateBox {
-    position: relative;
     margin: 0 auto;
 }
 
 .postsBox {
-    top: 40px;
     margin-top: 20px;
+    width: 80%;
 }
 
 .postCreateBox {
@@ -56,19 +45,18 @@
 }
 
 .postBox {
-    top: 25px;
     padding: 10px;
-    box-shadow: 0 0 0 4px #CCCC00;
+    margin: 20px;
+    box-shadow: 0 0 0 3px #CCCC00;
 }
 
 .titleBox {
-    font-size: 3em;
+    font-size: 1.5em;
     font-weight: bold;
-    text-align: center;
-    width: 100%;
 }
 
 .textBox {
+    text-align: justify;
     margin-top: 10px;
     width: 100%;
 }
@@ -82,4 +70,8 @@
 .commentBox {
     margin: 10px;
     padding: 5px;
+}
+
+.newsBox, .postBox {
+    border-radius: 3px;
 }
