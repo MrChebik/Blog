@@ -55,10 +55,11 @@ span {
     position: relative;
     padding: 3px;
     margin: 20px 0 0 10%;
+    height: 30px;
 }
 
-.addButton {
-    margin-left: 80%;
+.addButton, .categoriesButton, .editButton, .removeButton {
+    position: absolute;
     width: 180px;
     height: 30px;
     line-height: 30px;
@@ -66,13 +67,39 @@ span {
     font-size: 24px;
     cursor: pointer;
     color: ghostwhite;
-    background-color: #FF9933;
     border-radius: 5px;
+}
+
+.addButton {
+    background-color: #FF9933;
+    left: 76%;
     box-shadow: 1px 2px 1px 0 #CC6600;
+}
+
+.categoriesButton {
+    background-color: #3366CC;
+    left: 65%;
+    box-shadow: 1px 2px 1px 0 #330099;
+}
+
+.editButton {
+    background-color: #FF6633;
+    left: 65%;
+    box-shadow: 1px 2px 1px 0 #CC6600;
+}
+
+.removeButton {
+    background-color: #FF0033;
+    left: 76%;
+    box-shadow: 1px 2px 1px 0 #993300;
 }
 
 .addButton:active {
     background-color: #CC6600;
+}
+
+.categoriesButton:active {
+    background-color: #330099;
 }
 
 table {
@@ -105,4 +132,18 @@ th:nth-child(2) {
 
 th:nth-child(4) {
     width: 11%;
+}
+
+.edit, .remove {
+    top: 10px;
+}
+
+.edit {
+    position: absolute;
+    right: 80px;
+}
+
+.remove {
+    position: absolute;
+    right: 15px;
 }

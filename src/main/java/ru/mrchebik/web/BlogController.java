@@ -133,6 +133,7 @@ public class BlogController {
             }
         }
         model.addAttribute("comments", comments);
+        model.addAttribute("category", postService.findPost(idFromString).getCategory());
         model.addAttribute("page", page);
         model.addAttribute("pages", UserSession.getPages());
 

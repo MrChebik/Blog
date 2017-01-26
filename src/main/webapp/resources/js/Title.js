@@ -3,8 +3,8 @@
  */
 var error = 1;
 
-function check(id) {
-    var element = document.getElementById(id);
+function check() {
+    var element = document.getElementById('title');
 
     if (element.value.length < 1 || element.value.length > 50) {
         element.style.borderColor = 'red';

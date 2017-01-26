@@ -28,6 +28,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void update(Post post) {
+        postRepository.updatePost(post.getPostId(), post.getTitle(), post.getText());
+    }
+
+    @Override
     public List<Post> findPosts(long userId) {
         List<Post> posts = new ArrayList<>();
         for(Object[] object : postRepository.findByUser(userId)) {

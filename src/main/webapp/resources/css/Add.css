@@ -1,4 +1,4 @@
-#title, #text {
+#title, #text, #textComment {
     margin: 5px;
     padding-left: 3px;
     padding-right: 3px;
@@ -10,12 +10,12 @@
     outline: none;
 }
 
-#text {
+#text, #textComment {
     height: 500px;
     resize: none;
 }
 
-#text {
+#text, #textComment {
     font-family: Arial;
     font-size: 16px;
 }

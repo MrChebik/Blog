@@ -68,8 +68,8 @@
 }
 
 .commentBox {
-    margin: 10px;
     padding: 5px;
+    margin: 10px 10px 0;
 }
 
 .newsBox, .postBox {

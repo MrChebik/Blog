@@ -52,6 +52,12 @@ public class Post {
         this.date = date;
     }
 
+    public Post(long postId, String title, String text) {
+        this.postId = postId;
+        this.title = title;
+        this.text = text;
+    }
+
     public long getPostId() {
         return postId;
     }

@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by mrchebik on 14.01.17.
+ * Created by mrchebik on 26.01.17.
  */
 @Service
 @Repository
@@ -31,6 +31,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public void editComment(Comment comment) {
+        commentRepository.update(comment.getCommentId(), comment.getText());
+    }
+
+    @Override
+    public Comment findComment(long id) {
+        return commentRepository.findOne(id);
+    }
+
+    @Override
     public List<Comment> findComments(long postId) {
         List<Comment> comments = new ArrayList<>();
         for(Object[] object : commentRepository.findByUser(postId)) {
@@ -42,5 +52,10 @@ public class CommentServiceImpl implements CommentService {
             comments.add(new Comment(userRepository.findOne(userId),id, text, date));
         }
         return comments;
+    }
+
+    @Override
+    public void removeComment(long id) {
+        commentRepository.delete(id);
     }
 }

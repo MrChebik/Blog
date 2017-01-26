@@ -16,9 +16,13 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Add.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/submit.js"/>"></script>
     <style>
-        #text {
+        #text, #textComment {
             height: 100px;
             border: none;
+        }
+
+        .addButton {
+            position: relative;
         }
     </style>
 </head>
@@ -38,13 +42,25 @@
     </div>
 </div>
 <div class="center">
+    <c:if test="${username != null || user.username == username}">
+        <div class="menu">
+            <div class="editButton" onclick="window.location.href='/blog/post/${post.postId}/edit'">
+                Edit post
+            </div>
+            <div class="removeButton" onclick="window.location.href='/blog/post/${post.postId}/remove'">
+                Remove post
+            </div>
+        </div>
+    </c:if>
     <div class="postsBox">
         <div class="postBox">
-            <div class="categoryBox"></div>
             <div class="titleBox">
                 ${post.title}
             </div>
             <hr>
+            <div class="categoryBox">
+
+            </div>
             <div class="textBox">
                 ${post.text}
             </div>
@@ -55,69 +71,98 @@
             <hr class="date">
             <div class="commentBox">
                 <c:choose>
-                    <c:when test="${comments.size() != 0}">
-                        <c:forEach items="${comments}" var="comment" >
-                            <div class="comment">
-                                <div class="commentUser">
-                                    ${comment.user.username}
-                                </div>
-                                <div class="commentText">
-                                    ${comment.text}
-                                </div>
-                                <div class="commentDate">
-                                    ${comment.date}
-                                </div>
+                    <c:when test="${commentText != null}">
+                        <div class="comment">
+                            <div class="commentText">
+                                <form id="form3" method="post">
+                                    <textarea id="textComment" name="text" required placeholder="Text">${commentText}</textarea>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                </form>
                             </div>
-                        </c:forEach>
+                        </div>
                     </c:when>
-                </c:choose>
-                <c:if test="${user != null && (pages == 0 || page == pages)}">
-                    <div class="comment">
-                        <div class="commentText">
-                            <form id="form1" method="post">
-                                <textarea id="text" name="text" required placeholder="Text"></textarea>
-                                <input id="0072" type="hidden" name="hide" value="${page}">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                            </form>
-                        </div>
-                        <div class="addButton" onclick="document.getElementById('form1').submit()">
-                            Add comment
-                        </div>
-                    </div>
-                </c:if>
-                <c:if test="${comments.size() != 0}">
-                    <form id="form2" method="get">
-                        <input id="0071" type="hidden" name="hideId">
+                    <c:otherwise>
                         <c:choose>
-                            <c:when test="${pages > 1}">
-                                <br>
-                                <input id="007" type="hidden" name="hide" value="${page}">
-                                <c:choose>
-                                    <c:when test="${page > 4}">
-                                        <span class="fake-link" id="${1}" onclick="submitData(this.id, '007')">${1}</span> ...
-                                    </c:when>
-                                </c:choose>
-                                <c:forEach begin="${page > 4 ? page - 2 : 1}" end="${page + 4 > pages ? pages : page + 2}" var="pageId">
-                                    <c:choose>
-                                        <c:when test="${page == pageId}">
-                                            <span class="fake-link currentPage" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="fake-link" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
-                                        </c:otherwise>
-                                    </c:choose>
+                            <c:when test="${comments.size() != 0}">
+                                <c:forEach items="${comments}" var="comment" >
+                                    <div class="comment">
+                                        <div class="commentUser">
+                                                ${comment.user.username}
+                                        </div>
+                                        <div class="commentText">
+                                                ${comment.text}
+                                        </div>
+                                        <div class="commentDate">
+                                                ${comment.date}
+                                        </div>
+                                        <div class="edit fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/edit'">
+                                            Edit
+                                        </div>
+                                        <div class="remove fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/remove'">
+                                            Remove
+                                        </div>
+                                    </div>
                                 </c:forEach>
-                                <c:choose>
-                                    <c:when test="${page + 4 <= pages}">
-                                        ... <span class="fake-link" id="${pages}" onclick="submitData(this.id, '007')">${pages}</span>
-                                    </c:when>
-                                </c:choose>
                             </c:when>
                         </c:choose>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                    </form>
-                </c:if>
+                        <c:if test="${user != null && (pages == 0 || page == pages)}">
+                            <div class="comment">
+                                <div class="commentText">
+                                    <form id="form1" method="post">
+                                        <textarea id="text" name="text" required placeholder="Text"></textarea>
+                                        <input id="0072" type="hidden" name="hide" value="${page}">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                    </form>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${comments.size() != 0}">
+                            <form id="form2" method="get">
+                                <input id="0071" type="hidden" name="hideId">
+                                <c:choose>
+                                    <c:when test="${pages > 1}">
+                                        <br>
+                                        <input id="007" type="hidden" name="hide" value="${page}">
+                                        <c:choose>
+                                            <c:when test="${page > 4}">
+                                                <span class="fake-link" id="${1}" onclick="submitData(this.id, '007')">${1}</span> ...
+                                            </c:when>
+                                        </c:choose>
+                                        <c:forEach begin="${page > 4 ? page - 2 : 1}" end="${page + 4 > pages ? pages : page + 2}" var="pageId">
+                                            <c:choose>
+                                                <c:when test="${page == pageId}">
+                                                    <span class="fake-link currentPage" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="fake-link" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${page + 4 <= pages}">
+                                                ... <span class="fake-link" id="${pages}" onclick="submitData(this.id, '007')">${pages}</span>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:when>
+                                </c:choose>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                            </form>
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
             </div>
+            <c:choose>
+                <c:when test="${user != null && (pages == 0 || page == pages) && commentText == null}">
+                    <div class="addButton" onclick="document.getElementById('form1').submit()">
+                        Add comment
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="addButton" onclick="document.getElementById('form3').submit()">
+                        Save comment
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>

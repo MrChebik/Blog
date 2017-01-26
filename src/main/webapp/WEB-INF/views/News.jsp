@@ -59,6 +59,7 @@
             <span class="news">News</span>
             <hr>
             <p>
+                26.01.17 -- Added the ability to edit/remove posts, comments<br>
                 24.01.17 -- Added the ability to add comments.<br>
                 21.01.17 -- Added the ability to add posts.<br>
                 17.01.17 -- Added a password recovery by email.<br>

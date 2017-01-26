@@ -35,14 +35,21 @@
     <div class="postsBox">
         <div class="postCreateBox">
             <form id="form1" method="post">
-                <input id="title" type="text" name="title" oninput="check(this.id)" placeholder="Title">
-                <textarea id="text" name="text" placeholder="Text"></textarea>
+                <input id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
+                <textarea id="text" name="text" placeholder="Text">${post.text}</textarea>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </form>
         </div>
         <div class="menu">
             <div class="addButton" onclick="checkError()">
-                Add post
+                <c:choose>
+                    <c:when test="${post.title != null}">
+                        Save post
+                    </c:when>
+                    <c:otherwise>
+                        Add post
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>

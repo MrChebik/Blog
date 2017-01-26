@@ -66,6 +66,7 @@ hr[class="footer"] {
 }
 
 .comment {
+    position: relative;
     margin: 5px;
     border: 1px solid lightgray;
     border-radius: 3px;

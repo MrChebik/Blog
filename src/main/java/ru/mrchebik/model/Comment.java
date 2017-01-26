@@ -28,6 +28,9 @@ public class Comment {
     @JoinColumn(name = "postId", nullable = false)
     private Post post;
 
+    public Comment() {
+    }
+
     public Comment(User user, long commentId, String text, Date date) {
         this.user = user;
         this.commentId = commentId;
@@ -40,6 +43,11 @@ public class Comment {
         this.post = post;
         this.text = text;
         this.date = date;
+    }
+
+    public Comment(long id, String text) {
+        this.commentId = id;
+        this.text = text;
     }
 
     public long getCommentId() {
