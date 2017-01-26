@@ -11,6 +11,8 @@ USE Blog;
 CREATE TABLE categories
 (
     categoryId BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    level BIGINT(20) NOT NULL,
+    parentId BIGINT(20) NOT NULL,
     name VARCHAR(255) NOT NULL
 );
 CREATE UNIQUE INDEX UK_t8o6pivur7nn124jehx7cygw5 ON categories (name);

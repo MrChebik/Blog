@@ -17,6 +17,12 @@ public class Category {
     @Column(nullable =  false, unique = true)
     private String name;
 
+    @Column(nullable = false)
+    private long level;
+
+    @Column(nullable = false)
+    private long parentId;
+
     @ManyToMany(mappedBy = "categories")
     private Set<Post> posts;
 
@@ -46,5 +52,21 @@ public class Category {
 
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
+    }
+
+    public long getLevel() {
+        return level;
+    }
+
+    public void setLevel(long level) {
+        this.level = level;
+    }
+
+    public long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
     }
 }

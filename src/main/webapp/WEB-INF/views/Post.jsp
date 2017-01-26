@@ -42,7 +42,7 @@
     </div>
 </div>
 <div class="center">
-    <c:if test="${username != null || user.username == username}">
+    <c:if test="${user.username == username}">
         <div class="menu">
             <div class="editButton" onclick="window.location.href='/blog/post/${post.postId}/edit'">
                 Edit post
@@ -95,12 +95,16 @@
                                         <div class="commentDate">
                                                 ${comment.date}
                                         </div>
-                                        <div class="edit fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/edit'">
-                                            Edit
-                                        </div>
-                                        <div class="remove fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/remove'">
-                                            Remove
-                                        </div>
+                                        <c:if test="${user.username == comment.user.username}">
+                                            <div class="edit fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/edit'">
+                                                Edit
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${user.username == username || user.username == comment.user.username}">
+                                            <div class="remove fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/remove'">
+                                                Remove
+                                            </div>
+                                        </c:if>
                                     </div>
                                 </c:forEach>
                             </c:when>
