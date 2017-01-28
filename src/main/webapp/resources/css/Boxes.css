@@ -26,7 +26,7 @@
     width: 60%;
 }
 
-.postsBox, .postBox {
+.postsBox, .postBox, #label {
     margin-left: 10%;
 }
 
@@ -34,7 +34,7 @@
     margin: 0 auto;
 }
 
-.postsBox {
+.postsBox, #label {
     margin-top: 20px;
     width: 80%;
 }

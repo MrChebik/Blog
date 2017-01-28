@@ -12,10 +12,11 @@ CREATE TABLE categories
 (
     categoryId BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     level BIGINT(20) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     parentId BIGINT(20) NOT NULL,
-    name VARCHAR(255) NOT NULL
+    userId BIGINT(20) NOT NULL
 );
-CREATE UNIQUE INDEX UK_t8o6pivur7nn124jehx7cygw5 ON categories (name);
+CREATE INDEX FK41l5cytmhq8vodj4tnwkj8ffi ON categories (userId);
 CREATE TABLE category_post
 (
     categoryId BIGINT(20) NOT NULL,
@@ -87,6 +88,12 @@ CREATE TABLE users
 );
 CREATE UNIQUE INDEX UK_6dotkott2kjsp8vw4d0m25fb7 ON users (email);
 CREATE UNIQUE INDEX UK_r43af9ap4edm43mmtq01oddj6 ON users (username);
+CREATE TABLE users_comments
+(
+    User_userId BIGINT(20) NOT NULL,
+    comments_commentId BIGINT(20) NOT NULL
+);
+CREATE UNIQUE INDEX UK_k37a2tgpryb7o52hqfa7o2e62 ON users_comments (comments_commentId);
 CREATE TABLE users_posts
 (
     User_userId BIGINT(20) NOT NULL,
@@ -100,6 +107,8 @@ CREATE TABLE users_readers
 );
 CREATE UNIQUE INDEX UK_1tlk8gmag0gsiy58a0yy33i3x ON users_readers (readers_readerId);
 
+ALTER TABLE categories
+    ADD CONSTRAINT FK41l5cytmhq8vodj4tnwkj8ffi FOREIGN KEY (userId) REFERENCES users (userId);
 ALTER TABLE category_post
     ADD CONSTRAINT `PRIMARY` PRIMARY KEY (categoryId, postId),
     ADD CONSTRAINT FK4l4lnj564b87wv8e8rjp6x95e FOREIGN KEY (postId) REFERENCES categories (categoryId),
@@ -123,6 +132,10 @@ ALTER TABLE user_role
     ADD CONSTRAINT `PRIMARY` PRIMARY KEY (userId, roleId),
     ADD CONSTRAINT FK4ch3b3m0g8nsix3bl1334x7uj FOREIGN KEY (userId) REFERENCES users (userId),
     ADD CONSTRAINT FKfjlagks6xvf2uas035crflu75 FOREIGN KEY (roleId) REFERENCES role (roleId);
+ALTER TABLE users_comments
+    ADD CONSTRAINT `PRIMARY` PRIMARY KEY (User_userId, comments_commentId),
+    ADD CONSTRAINT FKodt50e5yao2yirqxbaf9udfb3 FOREIGN KEY (User_userId) REFERENCES users (userId),
+    ADD CONSTRAINT FKofw2n5pwh2s7cysu579u21q8c FOREIGN KEY (comments_commentId) REFERENCES comments (commentId);
 ALTER TABLE users_posts
     ADD CONSTRAINT `PRIMARY` PRIMARY KEY (User_userId, posts_postId),
     ADD CONSTRAINT FK7tjblyh45kyejxw2lmod67vxo FOREIGN KEY (User_userId) REFERENCES users (userId),

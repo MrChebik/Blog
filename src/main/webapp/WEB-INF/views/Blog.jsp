@@ -37,7 +37,7 @@
 </div>
 <div class="center">
     <div class="menu">
-        <div class="categoriesButton" onclick="window.location.href='/blog/categories'">
+        <div class="categoriesButton" onclick="window.location.href='/blog/categories/-1'">
             Categories
         </div>
         <div class="addButton" onclick="window.location.href='/blog/post/add'">

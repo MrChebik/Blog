@@ -14,7 +14,7 @@ public class Category {
     @Column(nullable = false)
     private long categoryId;
 
-    @Column(nullable =  false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -26,7 +26,33 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private Set<Post> posts;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
+    public Category() {
+    }
+
     public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(long categoryId, long level, String name, long parentId) {
+        this.categoryId = categoryId;
+        this.level = level;
+        this.name = name;
+        this.parentId = parentId;
+    }
+
+    public Category(User user, long level, String name, long parentId) {
+        this.user = user;
+        this.level = level;
+        this.name = name;
+        this.parentId = parentId;
+    }
+
+    public Category(long categoryId, String name) {
+        this.categoryId = categoryId;
         this.name = name;
     }
 
@@ -68,5 +94,13 @@ public class Category {
 
     public void setParentId(long parentId) {
         this.parentId = parentId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

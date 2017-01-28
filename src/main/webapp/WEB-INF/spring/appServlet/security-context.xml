@@ -17,10 +17,7 @@
     <http auto-config="true" >
         <intercept-url pattern="/blog/**" access="authenticated" />
         <intercept-url pattern="/auth/**" access="permitAll" />
-        <intercept-url pattern="/accessDenied" access="permitAll" />
         <intercept-url pattern="/" access="permitAll" />
-
-        <access-denied-handler error-page="/accessDenied" />
 
         <logout logout-success-url="/index?logout"  />
         <form-login

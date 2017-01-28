@@ -31,9 +31,8 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(name = "post_comment", joinColumns = @JoinColumn(name = "postId"), inverseJoinColumns = @JoinColumn(name = "commentId"))
-    private Set<Comment> comments;
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>(0);
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Reader> readers;
