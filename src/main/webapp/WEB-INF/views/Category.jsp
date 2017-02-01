@@ -15,6 +15,11 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/Category.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/submit.js"/>"></script>
+    <style>
+        td:nth-child(3) {
+            width: 3%;
+        }
+    </style>
 </head>
 <body>
 <div class="top">
@@ -70,7 +75,7 @@
                             <tr>
                                 <td>${categories.indexOf(category) + 1}</td>
                                 <td onclick="window.location.href='/blog/categories/${category.categoryId}'">${category.name}</td>
-                                <td><span class="fake-link" onclick="window.location.href='/blog/categories/delete?id=${category.categoryId}$parentId=${category.parentId}'">Remove</span></td>
+                                <td><span class="fake-link" onclick="window.location.href='/blog/categories/delete?id=${category.categoryId}'">Remove</span></td>
                             </tr>
                         </c:forEach>
                     </table>

@@ -43,7 +43,6 @@ public class CategoryController {
             level = category.getLevel() + 1;
             parentId = category.getCategoryId();
 
-            // TODO click to the category and follow to the special link
             int tempId = 0;
             int tempCatId = (int) Long.parseLong(categoryId);
             int temp = 0;
@@ -114,10 +113,25 @@ public class CategoryController {
 
     @RequestMapping(value = "/delete", method = GET)
     public String removeCategory(@RequestParam String id,
-                                 @RequestParam String parentId) {
+                                 Principal principal) {
         categoryService.remove(Long.parseLong(id));
+        List<Category> categories = categoryService.findByParentId(Long.parseLong(id), userService.findUser(principal.getName()).getUserId());
+        if (categories != null) {
+            for (Category category : categories) {
+                removeCategories(category, userService.findUser(principal.getName()).getUserId());
+            }
+        }
 
+        return "redirect:/blog/categories/-1";
+    }
 
-        return "redirect:/blog/categories/";
+    private void removeCategories(Category category, long userId) {
+        categoryService.remove(category.getCategoryId());
+        List<Category> categories = categoryService.findByParentId(category.getCategoryId(), userId);
+        if (categories != null) {
+            for (Category category0 : categories) {
+                removeCategories(category0, userId);
+            }
+        }
     }
 }

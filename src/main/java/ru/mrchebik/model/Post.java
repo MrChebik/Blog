@@ -22,7 +22,7 @@ public class Post {
     @Column(nullable = false, length = 30000)
     private String text;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
     @JoinTable(name = "category_post", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "postId"))
     private Set<Category> categories = new HashSet<>();
 

@@ -32,9 +32,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findByParentId(long parntId, long userId) {
+    public Category findByParentIdThroughCategoryId(long prntId, long userId) {
         Category category = null;
-        for(Object[] object : categoryRepository.findByParentId(parntId, userId)) {
+        for(Object[] object : categoryRepository.findByParentIdThroughCategoryId(prntId, userId)) {
             long categoryId = Long.parseLong(String.valueOf(object[0]));
             String name = String.valueOf(object[1]);
             long level = Long.parseLong(String.valueOf(object[2]));
@@ -44,6 +44,21 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         return category;
+    }
+
+    @Override
+    public List<Category> findByParentId(long prntId, long userId) {
+        List<Category> categories = new ArrayList<>();
+        for(Object[] object : categoryRepository.findByParentId(prntId, userId)) {
+            long categoryId = Long.parseLong(String.valueOf(object[0]));
+            String name = String.valueOf(object[1]);
+            long level = Long.parseLong(String.valueOf(object[2]));
+            long parentId = Long.parseLong(String.valueOf(object[3]));
+
+            categories.add(new Category(categoryId, level, name, parentId));
+        }
+
+        return categories;
     }
 
     @Override

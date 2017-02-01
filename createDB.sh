@@ -111,7 +111,7 @@ ALTER TABLE categories
     ADD CONSTRAINT FK41l5cytmhq8vodj4tnwkj8ffi FOREIGN KEY (userId) REFERENCES users (userId);
 ALTER TABLE category_post
     ADD CONSTRAINT `PRIMARY` PRIMARY KEY (categoryId, postId),
-    ADD CONSTRAINT FK4l4lnj564b87wv8e8rjp6x95e FOREIGN KEY (postId) REFERENCES categories (categoryId),
+    ADD CONSTRAINT FK4l4lnj564b87wv8e8rjp6x95e FOREIGN KEY (postId) REFERENCES categories (categoryId) ON DELETE CASCADE,
     ADD CONSTRAINT FKgmq9ws6i95e47w2vnaphigfrd FOREIGN KEY (categoryId) REFERENCES posts (postId);
 ALTER TABLE comments
     ADD CONSTRAINT FK3otd8f5ei3ewk9366frwusulq FOREIGN KEY (userId) REFERENCES users (userId),

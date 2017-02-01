@@ -75,6 +75,27 @@ public class BlogController {
             }
         }
         model.addAttribute("userBlog", username);
+
+        if (username != null) {
+            for (Post post : posts) {
+                try {
+                    Category category = post.getCategory().iterator().next();
+                    String parseCategories = " > " + category.getName();
+                    long level = category.getLevel();
+                    long catParentId = category.getParentId();
+                    while (level != -1) {
+                        category = categoryService.findByParentIdThroughCategoryId(catParentId, userService.findUser(principal.getName()).getUserId());
+                        parseCategories = " > " + category.getName() + parseCategories;
+                        level = category.getLevel();
+                        catParentId = category.getCategoryId();
+                    }
+                    parseCategories = parseCategories.substring(3);
+                    model.addAttribute("categoryPath", parseCategories);
+                } catch (NoSuchElementException ignored) {
+                }
+            }
+        }
+
         model.addAttribute("username", principal.getName());
         for (Post post : posts) {
             if (post.getText().length() > 500) {
@@ -114,7 +135,7 @@ public class BlogController {
             long level = category.getLevel();
             long catParentId = category.getParentId();
             while (level != -1) {
-                category = categoryService.findByParentId(catParentId, userService.findUser(principal.getName()).getUserId());
+                category = categoryService.findByParentIdThroughCategoryId(catParentId, userService.findUser(principal.getName()).getUserId());
                 parseCategories = " > " + category.getName() + parseCategories;
                 level = category.getLevel();
                 catParentId = category.getCategoryId();
