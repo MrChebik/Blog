@@ -15,6 +15,11 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Add.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/Title.js"/>"></script>
+    <style>
+        #box0 {
+            display: block !important;
+        }
+    </style>
 </head>
 <body>
 <div class="top">
@@ -33,15 +38,32 @@
 </div>
 <div class="center">
     <div class="postsBox">
+        <c:if test="${maxLevel != -2}">
+            <c:forEach var="i" begin="0" end="${maxLevel+1}">
+                <div id="box${i}" style="display: ${i == 0 ? 'block' : 'none'};">
+                    <select id="select${i}" onclick="checkSelects(this, ${i}, ${maxLevel})">
+                        <option selected class="space-display"></option>
+                        <c:forEach items="${categories}" var="category">
+                            <c:if test="${category.level == i-1}">
+                                <option id="${category.categoryId}" data-name="${category.parentId}">
+                                    ${category.name}
+                                </option>
+                            </c:if>
+                        </c:forEach>
+                    </select>
+                </div>
+            </c:forEach>
+        </c:if>
         <div class="postCreateBox">
             <form id="form1" method="post">
                 <input id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
                 <textarea id="text" name="text" placeholder="Text">${post.text}</textarea>
+                <input id="catId" name="catId" type="hidden">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </form>
         </div>
         <div class="menu">
-            <div class="addButton" onclick="checkError()">
+            <div class="addButton" onclick="checkError(${maxLevel})">
                 <c:choose>
                     <c:when test="${post.title != null}">
                         Save post

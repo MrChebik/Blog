@@ -5,8 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.mrchebik.model.Category;
 import ru.mrchebik.model.Comment;
 import ru.mrchebik.model.Post;
+import ru.mrchebik.service.CategoryService;
 import ru.mrchebik.service.CommentService;
 import ru.mrchebik.service.PostService;
 import ru.mrchebik.service.UserService;
@@ -17,6 +19,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -33,6 +36,8 @@ public class BlogController {
     private UserService userService;
     @Resource
     private CommentService commentService;
+    @Resource
+    private CategoryService categoryService;
 
     @RequestMapping(value = { "/", "/{username}" }, method = GET)
     public String notes(@PathVariable(required = false) String username,
@@ -102,6 +107,22 @@ public class BlogController {
         } catch (Exception ignored) {
         }
         model.addAttribute("post", postService.findPost(idFromString));
+
+        try {
+            Category category = postService.findPost(idFromString).getCategory().iterator().next();
+            String parseCategories = " > " + category.getName();
+            long level = category.getLevel();
+            long catParentId = category.getParentId();
+            while (level != -1) {
+                category = categoryService.findByParentId(catParentId, userService.findUser(principal.getName()).getUserId());
+                parseCategories = " > " + category.getName() + parseCategories;
+                level = category.getLevel();
+                catParentId = category.getCategoryId();
+            }
+            parseCategories = parseCategories.substring(3);
+            model.addAttribute("categoryPath", parseCategories);
+        } catch (NoSuchElementException ignored) {
+        }
 
         List<Comment> comments = new ArrayList<>(commentService.findComments(idFromString));
 

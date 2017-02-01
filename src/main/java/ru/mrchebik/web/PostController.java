@@ -5,15 +5,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.mrchebik.model.Category;
 import ru.mrchebik.model.Comment;
 import ru.mrchebik.model.Post;
+import ru.mrchebik.service.CategoryService;
 import ru.mrchebik.service.CommentService;
 import ru.mrchebik.service.PostService;
 import ru.mrchebik.service.UserService;
 
 import javax.annotation.Resource;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -30,12 +34,23 @@ public class PostController {
     private UserService userService;
     @Resource
     private CommentService commentService;
+    @Resource
+    private CategoryService categoryService;
 
     @RequestMapping(value = "/add", method = GET)
     public String addPage(Principal principal,
                           Model model) {
         if (principal != null) {
             model.addAttribute("Username", principal.getName());
+
+            List<Category> categories = new ArrayList<>(categoryService.findAll(userService.findUser(principal.getName()).getUserId()));
+            model.addAttribute("categories", categories);
+
+            try {
+                model.addAttribute("maxLevel", categoryService.findMaxLevel(userService.findUser(principal.getName()).getUserId()));
+            } catch (NullPointerException e) {
+                model.addAttribute("maxLevel", -2);
+            }
         }
 
         return "AddPost";
@@ -44,8 +59,13 @@ public class PostController {
     @RequestMapping(value = "/add", method = POST)
     public String addPost(@RequestParam String title,
                           @RequestParam String text,
+                          @RequestParam String catId,
                           Principal principal) {
-        postService.add(new Post(userService.findUser(principal.getName()), title, text, new Date()));
+        if (catId.equals("")) {
+            postService.add(new Post(userService.findUser(principal.getName()), title, text, new Date()));
+        } else {
+            postService.add(new Post(userService.findUser(principal.getName()), categoryService.findById(Long.parseLong(catId)), title, text, new Date()));
+        }
 
         return "redirect:/blog/";
     }

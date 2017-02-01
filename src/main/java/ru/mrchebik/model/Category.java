@@ -23,7 +23,7 @@ public class Category {
     @Column(nullable = false)
     private long parentId;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories")
     private Set<Post> posts;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -28,7 +28,7 @@
     <div class="bar">
         <ul id="navbar">
             <li onclick="window.location.href='/blog/';"><span>Home</span></li>
-            <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
+            <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
             <li onclick="window.location.href='/blog/news';"><span>News</span></li>
             <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
             <li onclick="window.location.href='/blog/logout/';"><span>Logout</span></li>

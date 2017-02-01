@@ -59,7 +59,7 @@
             </div>
             <hr>
             <div class="categoryBox">
-
+                ${categoryPath}
             </div>
             <div class="textBox">
                 ${post.text}

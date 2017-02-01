@@ -2,6 +2,7 @@ package ru.mrchebik.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,9 +22,9 @@ public class Post {
     @Column(nullable = false, length = 30000)
     private String text;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "category_post", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "postId"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     @Column(nullable = false)
     private Date date;
@@ -40,6 +41,14 @@ public class Post {
 
     public Post(User user, String title, String text, Date date) {
         this.user = user;
+        this.title = title;
+        this.text = text;
+        this.date = date;
+    }
+
+    public Post(User user, Category category, String title, String text, Date date) {
+        this.user = user;
+        this.categories.add(category);
         this.title = title;
         this.text = text;
         this.date = date;

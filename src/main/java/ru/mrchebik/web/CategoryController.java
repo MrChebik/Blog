@@ -102,7 +102,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/add", method = POST)
-    public String getCategoriesPage(@RequestParam(required = false) String id,
+    public String addCategory(@RequestParam(required = false) String id,
                                     @RequestParam(required = false) String level,
                                     @RequestParam String categoryName,
                                     @RequestParam(required = false) String parentId,
@@ -110,5 +110,14 @@ public class CategoryController {
         categoryService.add(new Category(userService.findUser(principal.getName()), Long.parseLong(level), categoryName, Long.parseLong(parentId)));
 
         return "redirect:/blog/categories/" + id;
+    }
+
+    @RequestMapping(value = "/delete", method = GET)
+    public String removeCategory(@RequestParam String id,
+                                 @RequestParam String parentId) {
+        categoryService.remove(Long.parseLong(id));
+
+
+        return "redirect:/blog/categories/";
     }
 }

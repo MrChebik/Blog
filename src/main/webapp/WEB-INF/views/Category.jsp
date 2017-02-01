@@ -14,6 +14,7 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/Category.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/submit.js"/>"></script>
 </head>
 <body>
 <div class="top">
@@ -66,9 +67,10 @@
                             <th>Name</th>
                         </tr>
                         <c:forEach items="${categories}" var="category" >
-                            <tr onclick="window.location.href='/blog/categories/${category.categoryId}'">
+                            <tr>
                                 <td>${categories.indexOf(category) + 1}</td>
-                                <td>${category.name}</td>
+                                <td onclick="window.location.href='/blog/categories/${category.categoryId}'">${category.name}</td>
+                                <td><span class="fake-link" onclick="window.location.href='/blog/categories/delete?id=${category.categoryId}$parentId=${category.parentId}'">Remove</span></td>
                             </tr>
                         </c:forEach>
                     </table>

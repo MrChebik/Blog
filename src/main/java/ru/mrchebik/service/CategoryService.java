@@ -10,7 +10,9 @@ import java.util.List;
 public interface CategoryService {
     void add(Category category);
     Category findById(long id);
+    Category findByParentId(long parentId, long userId);
     List<Category> findAll(long userId);
+    long findMaxLevel(long userId);
     List<Category> findByParentIdAndLevel(long userId, long parentId, long level);
     void remove(long id);
 }
