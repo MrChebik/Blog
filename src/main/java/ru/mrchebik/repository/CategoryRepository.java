@@ -23,4 +23,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("select category.categoryId, category.name, category.level, category.parentId from ru.mrchebik.model.Category category where category.parentId = :parentId and category.user.userId = :userId")
     List<Object[]> findByParentId(@Param("parentId") long parentId, @Param("userId") long userId);
+
+    @Modifying
+    @Query("update ru.mrchebik.model.Category category set category.name = :name where category.categoryId = :categoryId")
+    void update(@Param("categoryId") long categoryId, @Param("name") String name);
 }

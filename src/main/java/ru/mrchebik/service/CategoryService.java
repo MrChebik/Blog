@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface CategoryService {
     void add(Category category);
+    void edit(String name, long categoryId);
     Category findById(long id);
     Category findByParentIdThroughCategoryId(long parentId, long userId);
     List<Category> findByParentId(long parentId, long userId);

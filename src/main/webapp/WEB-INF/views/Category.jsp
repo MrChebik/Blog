@@ -16,9 +16,14 @@
     <script type="text/javascript" src="<c:url value="/resources/js/Category.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/submit.js"/>"></script>
     <style>
-        td:nth-child(3) {
+        td:nth-child(3), td:nth-child(4) {
             width: 3%;
         }
+
+        #save, .text {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -74,7 +79,8 @@
                         <c:forEach items="${categories}" var="category" >
                             <tr>
                                 <td>${categories.indexOf(category) + 1}</td>
-                                <td onclick="window.location.href='/blog/categories/${category.categoryId}'">${category.name}</td>
+                                <td><span id="cat${category.categoryId}" class="fake-link" onclick="window.location.href='/blog/categories/${category.categoryId}'">${category.name}</span><input id="text${category.categoryId}" class="text" type="text" placeholder="Name" value="${category.name}" oninput="checkText(this)"></td>
+                                <td><span id="edit" class="fake-link" onclick="edit(${category.categoryId})">Edit</span><span id="save" class="fake-link" onclick="saveData(${category.categoryId})">Save</span></td>
                                 <td><span class="fake-link" onclick="window.location.href='/blog/categories/delete?id=${category.categoryId}'">Remove</span></td>
                             </tr>
                         </c:forEach>

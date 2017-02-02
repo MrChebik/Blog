@@ -134,4 +134,12 @@ public class CategoryController {
             }
         }
     }
+
+    @RequestMapping(value = "/edit", method = GET)
+    public String removeCategory(@RequestParam String id,
+                                 @RequestParam String name) {
+        categoryService.edit(name, Long.parseLong(id));
+
+        return "redirect:/blog/categories/-1";
+    }
 }
