@@ -61,7 +61,7 @@ public class CategoryController {
         }
         model.addAttribute("id", categoryId);
 
-        List<Category> categories = new ArrayList<>(categoryService.findByParentIdAndLevel(userService.findUser(principal.getName()).getUserId(), parentId, level));
+        List<Category> categories = new ArrayList<>(categoryService.findByParentId(parentId, userService.findUser(principal.getName()).getUserId()));
 
         if (id != 0) {
             if (page != 1 &&

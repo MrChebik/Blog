@@ -14,6 +14,5 @@ public interface CategoryService {
     List<Category> findByParentId(long parentId, long userId);
     List<Category> findAll(long userId);
     long findMaxLevel(long userId);
-    List<Category> findByParentIdAndLevel(long userId, long parentId, long level);
     void remove(long id);
 }

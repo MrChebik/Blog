@@ -81,18 +81,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findByParentIdAndLevel(long userId, long parentId, long level) {
-        List<Category> categories = new ArrayList<>();
-        for(Object[] object : categoryRepository.findByParentIdAndLevel(userId, parentId, level)) {
-            long categoryId = Long.parseLong(String.valueOf(object[0]));
-            String name = String.valueOf(object[1]);
-
-            categories.add(new Category(categoryId, level, name, parentId));
-        }
-        return categories;
-    }
-
-    @Override
     public void remove(long id) {
         categoryRepository.delete(id);
     }
