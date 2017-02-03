@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void changeEmail(String email, String newEmail) {
+        userRepository.changeEmail(email, newEmail);
+    }
+
+    @Override
     public User findUser(final String username) {
         return userRepository.findByName(username);
     }
