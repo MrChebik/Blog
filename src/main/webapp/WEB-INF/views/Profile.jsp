@@ -38,6 +38,9 @@
 <div class="center">
     <div class="postsBox">
         <form id="form1" method="post">
+            <input type="text" name="username" placeholder="Username" oninput="checkSetting(this)">
+            <div class="editButton" onclick="checkError('username')">Edit username</div>
+            <hr>
             <input type="password" name="oldPassword" placeholder="Old password" oninput="checkSetting(this)">
             <input type="password" name="newPassword" placeholder="New password" oninput="checkSetting(this)">
             <input type="password" name="passwordConfirm" placeholder="Password confirm" oninput="checkSetting(this)">

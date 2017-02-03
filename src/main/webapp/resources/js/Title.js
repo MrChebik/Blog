@@ -62,3 +62,19 @@ function checkSelects(sel, i, maxLevel) {
         }
     }
 }
+
+function edit(i) {
+    document.getElementById('edit').style.display = 'none';
+    document.getElementById('cat' + i).style.display = 'none';
+    document.getElementById('text' + i).style.display = 'block';
+}
+
+function save(i) {
+    if (i.value.length < 1 || i.value.length > 50) {
+        element.style.borderColor = 'red';
+        error = 1;
+    } else {
+        element.style.borderColor = "#9999CC";
+        error = 0;
+    }
+}

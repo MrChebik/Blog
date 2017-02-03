@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface UserService {
     User add(User user);
+    void changeUsername(String email, String username);
     void changePassword(String email, String password);
     void changeEmail(String email, String newEmail);
     User findByEmail(String email);

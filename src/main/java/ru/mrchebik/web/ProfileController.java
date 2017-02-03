@@ -37,19 +37,24 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/setting", method = POST)
-    public String postSettingPage(@RequestParam(required = false) String oldPassword,
+    public String postSettingPage(@RequestParam(required = false) String username,
+                                  @RequestParam(required = false) String oldPassword,
                                   @RequestParam(required = false) String newPassword,
                                   @RequestParam(required = false) String email,
                                   @RequestParam String type,
                                   Principal principal,
                                   Model model) {
-        if (type.equals("email")) {
+        if (type.equals("username")) {
+            String password = userService.findUser(principal.getName()).getPassword();
+            userService.changeUsername(userService.findUser(principal.getName()).getEmail(), username);
+            securityService.autologin(username, password);
+        } else if (type.equals("email")) {
             try {
                 userService.changeEmail(userService.findUser(principal.getName()).getEmail(), email);
             } catch (Exception ignored) {
             }
         } else {
-            if (bCryptPasswordEncoder.matches(oldPassword, userService.findUser(principal.getName()).getPassword())) {
+            if (bCryptPasswordEncoder.encode(oldPassword).equals(userService.findUser(principal.getName()).getPassword())) {
                 userService.changePassword(userService.findUser(principal.getName()).getEmail(), newPassword);
             }
         }

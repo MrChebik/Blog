@@ -36,6 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void changeUsername(String email, String username) {
+        userRepository.changeUsername(email, username);
+    }
+
+    @Override
     public void changePassword(String email, String password) {
         String bcrypt = bCryptPasswordEncoder.encode(password);
         User user = userRepository.findByEmail(email);

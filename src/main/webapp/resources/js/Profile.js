@@ -4,7 +4,15 @@
 var error = 1;
 
 function checkSetting(elem) {
-    if (elem.name == 'email') {
+    if (elem.name == 'username') {
+        if (elem.value.length < 4 || elem.value.length > 50) {
+            elem.style.borderColor = 'red';
+            error = 1;
+        } else {
+            elem.style.borderColor = "#9999CC";
+            error = 0;
+        }
+    } else if (elem.name == 'email') {
         if (elem.value.indexOf('@') == -1) {
             elem.style.borderColor = "red";
             error = 1;
