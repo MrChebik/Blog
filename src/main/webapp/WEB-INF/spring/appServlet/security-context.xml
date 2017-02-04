@@ -19,7 +19,7 @@
         <intercept-url pattern="/auth/**" access="permitAll" />
         <intercept-url pattern="/" access="permitAll" />
 
-        <logout logout-success-url="/index?logout"  />
+        <logout logout-success-url="/?logout"  />
         <form-login
                 default-target-url="/blog/"
                 login-page="/"

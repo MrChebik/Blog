@@ -14,6 +14,7 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/default.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
+    <script type="text/javascript" src="<c:url value="/resources/js/logout.js"/>"></script>
     <style type="text/css">
         .postsBox {
             width: 80%;
@@ -21,6 +22,9 @@
     </style>
 </head>
 <body>
+<form action="<c:url value="/logout"/>" method="post" id="logoutForm">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
 <div class="top">
     <div class="blog">
         Blog
@@ -31,7 +35,7 @@
             <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
             <li onclick="window.location.href='/blog/news';"><span>News</span></li>
             <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
-            <li onclick="window.location.href='/blog/logout/';"><span>Logout</span></li>
+            <li onclick="logout()"><span>Logout</span></li>
         </ul>
     </div>
 </div>

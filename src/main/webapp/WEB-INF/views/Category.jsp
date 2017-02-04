@@ -15,6 +15,7 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/Category.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/submit.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/logout.js"/>"></script>
     <style>
         td:nth-child(3), td:nth-child(4) {
             width: 3%;
@@ -27,6 +28,9 @@
     </style>
 </head>
 <body>
+<form action="<c:url value="/logout"/>" method="post" id="logoutForm">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
 <div class="top">
     <div class="blog">
         Blog
@@ -37,7 +41,7 @@
             <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
             <li onclick="window.location.href='/blog/news';"><span>News</span></li>
             <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
-            <li onclick="window.location.href='/blog/logout/';"><span>Logout</span></li>
+            <li onclick="logout()"><span>Logout</span></li>
         </ul>
     </div>
 </div>

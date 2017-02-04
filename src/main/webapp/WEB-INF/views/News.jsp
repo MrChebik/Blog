@@ -14,6 +14,7 @@
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Auth.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/Auth.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/logout.js"/>"></script>
     <c:if test="${principal != null}">
         <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
         <style type="text/css">
@@ -37,6 +38,9 @@
     </c:if>
 </head>
 <body>
+<form action="<c:url value="/logout"/>" method="post" id="logoutForm">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
     <div class="top" style="display: none">
         <div class="blog">
             Blog
@@ -47,7 +51,7 @@
                 <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
                 <li onclick="window.location.href='/blog/news';"><span>News</span></li>
                 <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
-                <li onclick="window.location.href='/blog/logout/';"><span>Logout</span></li>
+                <li onclick="logout()"><span>Logout</span></li>
             </ul>
         </div>
     </div>
