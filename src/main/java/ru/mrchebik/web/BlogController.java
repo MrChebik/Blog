@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.mrchebik.model.Category;
 import ru.mrchebik.model.Comment;
 import ru.mrchebik.model.Post;
-import ru.mrchebik.service.CategoryService;
-import ru.mrchebik.service.CommentService;
-import ru.mrchebik.service.PostService;
-import ru.mrchebik.service.UserService;
+import ru.mrchebik.model.Reader;
+import ru.mrchebik.service.*;
 import ru.mrchebik.session.UserSession;
 
 import javax.annotation.Resource;
@@ -38,33 +36,20 @@ public class BlogController {
     private CommentService commentService;
     @Resource
     private CategoryService categoryService;
+    @Resource
+    private ReaderService readerService;
 
     @RequestMapping(value = { "/", "/{username}" }, method = GET)
     public String notes(@PathVariable(required = false) String username,
                         @RequestParam(value = "hide", defaultValue = "1") int page,
-                        @RequestParam(value = "hideId", defaultValue = "0") long id,
                         Principal principal,
                         Model model) {
-        List<Post> posts = new ArrayList<>(postService.findPosts(userService.findUser(principal.getName()).getUserId()));
-
-        if (id != 0) {
-            if (page != 1 &&
-                    page == UserSession.getPages() &&
-                    (UserSession.getPages() * UserSession.getCount()) - 9 == posts.size() &&
-                    posts.get(posts.size() - 1).getPostId() == id) {
-                page--;
-                posts.remove(posts.size() - 1);
-            }
-
-            for (int i = 0; i < posts.size(); i++) {
-                if (posts.get(i).getPostId() == id) {
-                    posts.remove(i);
-                    break;
-                }
-            }
-            postService.remove(id);
+        List<Post> posts;
+        if (username != null) {
+            posts = new ArrayList<>(postService.findPosts(userService.findUser(username).getUserId()));
+        } else {
+            posts = new ArrayList<>(postService.findPosts(userService.findUser(principal.getName()).getUserId()));
         }
-
         UserSession.setPages(posts, UserSession.getCount());
 
         if (posts.size() > UserSession.getCount()) {
@@ -93,6 +78,17 @@ public class BlogController {
                     model.addAttribute("categoryPath", parseCategories);
                 } catch (NoSuchElementException ignored) {
                 }
+            }
+        }
+
+        if (username != null) {
+            try {
+                if (readerService.findOne(userService.findUser(username).getUserId(), userService.findUser(principal.getName()).getUserId()) == null) {
+                    model.addAttribute("subscribe", "false");
+                } else {
+                    model.addAttribute("subscribe", "true");
+                }
+            } catch (NullPointerException ignored) {
             }
         }
 
@@ -191,5 +187,21 @@ public class BlogController {
         commentService.addComment(new Comment(userService.findUser(principal.getName()), postService.findPost(Integer.parseInt(id)), text, new Date()));
 
         return "redirect:/blog/" + username + "/post/" + id + "?hide=" + page;
+    }
+
+    @RequestMapping(value = "/{username}/subscribe", method = GET)
+    public String subscribe(@RequestParam String user,
+                            Principal principal) {
+        readerService.add(new Reader(userService.findUser(principal.getName()).getUserId(), userService.findUser(user)));
+
+        return "redirect:/blog/" + user + "/";
+    }
+
+    @RequestMapping(value = "/{username}/unsubscribe", method = GET)
+    public String unsubscribe(@RequestParam String user,
+                              Principal principal) {
+        readerService.delete(readerService.findOne(userService.findUser(user).getUserId(), userService.findUser(principal.getName()).getUserId()).getId());
+
+        return "redirect:/blog/" + user + "/";
     }
 }

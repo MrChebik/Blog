@@ -147,3 +147,9 @@ th:nth-child(4) {
     position: absolute;
     right: 15px;
 }
+
+.subscribe {
+    position: absolute;
+    right: 5%;
+    top: 10px;
+}

@@ -68,6 +68,58 @@
                 15.01.17 -- Created a local structure of classes.
             </p>
         </div>
+        <c:if test="${principal != null}">
+            <div class="postsBox">
+                <c:if test="${posts.size() != 0}">
+                    <form id="form2" method="get">
+                        <c:forEach items="${posts}" var="post" >
+                            <div class="postBox">
+                                ${post.user.username}
+                                <div class="titleBox fake-link" onclick="window.location.href='/blog/${post.user.username}/post/${post.postId}'">
+                                        ${post.title}
+                                </div>
+                                <hr>
+                                <div class="textBox">
+                                        ${post.text}
+                                </div>
+                                <hr class="date">
+                                <div class="dateBox">
+                                        ${post.date}
+                                </div>
+                                <hr class="date">
+                            </div>
+                        </c:forEach>
+                        <input id="0071" type="hidden" name="hideId">
+                        <c:choose>
+                            <c:when test="${pages > 1}">
+                                <br>
+                                <input id="007" type="hidden" name="hide" value="${page}">
+                                <c:choose>
+                                    <c:when test="${page > 4}">
+                                        <span class="fake-link" id="${1}" onclick="submitData(this.id, '007')">${1}</span> ...
+                                    </c:when>
+                                </c:choose>
+                                <c:forEach begin="${page > 4 ? page - 2 : 1}" end="${page + 4 > pages ? pages : page + 2}" var="pageId">
+                                    <c:choose>
+                                        <c:when test="${page == pageId}">
+                                            <span class="fake-link currentPage" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="fake-link" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${page + 4 <= pages}">
+                                        ... <span class="fake-link" id="${pages}" onclick="submitData(this.id, '007')">${pages}</span>
+                                    </c:when>
+                                </c:choose>
+                            </c:when>
+                        </c:choose>
+                    </form>
+                </c:if>
+            </div>
+        </c:if>
         <div class="loginBox">
             <form id="form1" action="<c:url value="/j_spring_security_check"/>" method="post">
                 <c:if test="${param.error != null}">

@@ -63,7 +63,8 @@ CREATE TABLE posts_comments
 CREATE UNIQUE INDEX UK_d4yhs18ap3loeqnj3y7my3bmg ON posts_comments (comments_commentId);
 CREATE TABLE readers
 (
-    readerId BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    readerId BIGINT(20) NOT NULL,
     userId BIGINT(20) NOT NULL
 );
 CREATE INDEX FK52fi3ejqtlmhhod892ebpq0r9 ON readers (userId);

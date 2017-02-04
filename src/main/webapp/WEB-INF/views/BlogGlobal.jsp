@@ -32,6 +32,18 @@
     </c:if>
 </div>
 <div class="center">
+    <c:if test="${userBlog != username}">
+        <div class="subscribe">
+            <c:choose>
+                <c:when test="${!subscribe}">
+                    <span id="subscribe" class="fake-link" onclick="window.location.href='/blog/${userBlog}/subscribe?user=${userBlog}'">Subscribe</span>
+                </c:when>
+                <c:otherwise>
+                    <span id="unsubscribe" class="fake-link" onclick="window.location.href='/blog/${userBlog}/unsubscribe?user=${userBlog}'">Unsubscribe</span>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </c:if>
     <div class="postsBox">
         <c:choose>
             <c:when test="${posts.size() == 0}" >
@@ -58,7 +70,6 @@
                             <hr class="date">
                         </div>
                         </c:forEach>
-                    </table>
                     <input id="0071" type="hidden" name="hideId">
                     <c:choose>
                         <c:when test="${pages > 1}">

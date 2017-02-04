@@ -10,7 +10,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post implements Comparable<Post> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
@@ -121,5 +121,10 @@ public class Post {
 
     public void setCategory(Set<Category> category) {
         this.categories = category;
+    }
+
+    @Override
+    public int compareTo(Post post) {
+        return post.getDate().compareTo(getDate());
     }
 }
