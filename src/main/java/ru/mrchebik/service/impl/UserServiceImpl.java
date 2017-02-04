@@ -53,6 +53,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findOne(long userId) {
+        return userRepository.findOne(userId);
+    }
+
+    @Override
     public User findUser(final String username) {
         return userRepository.findByName(username);
     }

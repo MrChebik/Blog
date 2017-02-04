@@ -44,6 +44,8 @@ public class BlogController {
                         @RequestParam(value = "hide", defaultValue = "1") int page,
                         Principal principal,
                         Model model) {
+        UserSession.setUsername(principal.getName());
+
         List<Post> posts;
         if (username != null) {
             posts = new ArrayList<>(postService.findPosts(userService.findUser(username).getUserId()));

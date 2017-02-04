@@ -16,6 +16,7 @@ public class UserSession {
     private static int pages;
     private static int count = 10;
     private static String email;
+    private static String username;
 
     public static String getCode() {
         return code;
@@ -47,5 +48,13 @@ public class UserSession {
 
     public static void setCount(int count) {
         UserSession.count = count;
+    }
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static void setUsername(String username) {
+        UserSession.username = username;
     }
 }

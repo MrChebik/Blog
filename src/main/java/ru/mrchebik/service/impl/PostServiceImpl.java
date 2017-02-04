@@ -33,6 +33,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public long findLastPostId(long userId) {
+        return postRepository.findLastPostId(userId);
+    }
+
+    @Override
     public List<Post> findPosts(long userId) {
         List<Post> posts = new ArrayList<>();
         for(Object[] object : postRepository.findByUser(userId)) {

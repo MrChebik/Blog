@@ -18,4 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Modifying
     @Query("update ru.mrchebik.model.Post post set post.title = :title, post.text = :text where post.postId = :postId")
     void updatePost(@Param("postId") long id, @Param("title") String title, @Param("text") String text);
+
+    @Query("select max(post.postId) from ru.mrchebik.model.Post post where post.user.userId = :userId")
+    long findLastPostId(@Param("userId") long id);
 }

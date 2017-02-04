@@ -10,15 +10,25 @@ import java.io.IOException;
 public class Run implements Runnable {
     private SMTPServer smtpServer;
     private String email;
+    private String url;
 
     public Run(String email) {
         this.email = email;
     }
 
+    public Run(String email, String url) {
+        this.email = email;
+        this.url = url;
+    }
+
     @Override
     public void run() {
         try {
-            smtpServer = new SMTPServer(email);
+            if (url == null) {
+                smtpServer = new SMTPServer(email);
+            } else {
+                smtpServer = new SMTPServer(email, url);
+            }
         } catch (IOException ignored) {
         }
     }

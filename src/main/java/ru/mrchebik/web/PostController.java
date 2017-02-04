@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.mrchebik.model.Category;
 import ru.mrchebik.model.Comment;
 import ru.mrchebik.model.Post;
-import ru.mrchebik.service.CategoryService;
-import ru.mrchebik.service.CommentService;
-import ru.mrchebik.service.PostService;
-import ru.mrchebik.service.UserService;
+import ru.mrchebik.model.Reader;
+import ru.mrchebik.run.Run;
+import ru.mrchebik.service.*;
+import ru.mrchebik.session.UserSession;
 
 import javax.annotation.Resource;
 import java.security.Principal;
@@ -36,6 +36,8 @@ public class PostController {
     private CommentService commentService;
     @Resource
     private CategoryService categoryService;
+    @Resource
+    private ReaderService readerService;
 
     @RequestMapping(value = "/add", method = GET)
     public String addPage(Principal principal,
@@ -65,6 +67,11 @@ public class PostController {
             postService.add(new Post(userService.findUser(principal.getName()), title, text, new Date()));
         } else {
             postService.add(new Post(userService.findUser(principal.getName()), categoryService.findById(Long.parseLong(catId)), title, text, new Date()));
+        }
+
+        long postId = postService.findLastPostId(userService.findUser(principal.getName()).getUserId());
+        for (Reader reader : readerService.findAllMain(userService.findUser(principal.getName()).getUserId())) {
+            new Thread(new Run(userService.findOne(reader.getReaderId()).getEmail(), "/blog/" + UserSession.getUsername() + "/post/" + postId)).start();
         }
 
         return "redirect:/blog/";

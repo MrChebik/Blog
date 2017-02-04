@@ -1,4 +1,4 @@
-package ru.mrchebik.smtp;
+package ru.mrchebik.util;
 
 import javax.mail.Message;
 import javax.mail.Session;

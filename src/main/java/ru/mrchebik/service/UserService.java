@@ -12,6 +12,7 @@ public interface UserService {
     void changeUsername(String email, String username);
     void changePassword(String email, String password);
     void changeEmail(String email, String newEmail);
+    User findOne(long userId);
     User findByEmail(String email);
     User findUser(String username);
     List<User> findUsers();
