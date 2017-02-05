@@ -1,6 +1,5 @@
 package ru.mrchebik.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +10,7 @@ import ru.mrchebik.model.Role;
 import ru.mrchebik.model.User;
 import ru.mrchebik.repository.UserRepository;
 
+import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +18,7 @@ import java.util.Set;
  * Created by mrchebik on 15.01.17.
  */
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
+    @Resource
     private UserRepository userRepository;
 
     @Override

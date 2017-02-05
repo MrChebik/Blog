@@ -14,9 +14,9 @@ public interface ReaderRepository extends JpaRepository<Reader, Long> {
     @Query("select reader.id from ru.mrchebik.model.Reader reader where reader.user.userId = :userIdMain and reader.readerId = :userIdFollower")
     Object findOne(@Param("userIdMain") long userIdMain, @Param("userIdFollower") long userIdFollower);
 
-    @Query("select reader.id, reader.readerId from ru.mrchebik.model.Reader reader where reader.user.userId = :userIdMain")
-    List<Object[]> findAllMain(@Param("userIdMain") long userIdMain);
+    @Query("select reader from ru.mrchebik.model.Reader reader where reader.user.userId = :userIdMain")
+    List<Reader> findAllMain(@Param("userIdMain") long userIdMain);
 
-    @Query("select reader.id, reader.user.userId from ru.mrchebik.model.Reader reader where reader.readerId = :userIdFollower")
-    List<Object[]> findAllFollower(@Param("userIdFollower") long userIdFollower);
+    @Query("select reader from ru.mrchebik.model.Reader reader where reader.readerId = :userIdFollower")
+    List<Reader> findAllFollower(@Param("userIdFollower") long userIdFollower);
 }

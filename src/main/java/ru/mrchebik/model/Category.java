@@ -11,37 +11,22 @@ import java.util.Set;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private long categoryId;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private long level;
-
-    @Column(nullable = false)
     private long parentId;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories")
     private Set<Post> posts;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     public Category() {
-    }
-
-    public Category(String name) {
-        this.name = name;
-    }
-
-    public Category(long categoryId, long level, String name, long parentId) {
-        this.categoryId = categoryId;
-        this.level = level;
-        this.name = name;
-        this.parentId = parentId;
     }
 
     public Category(User user, long level, String name, long parentId) {
@@ -49,11 +34,6 @@ public class Category {
         this.level = level;
         this.name = name;
         this.parentId = parentId;
-    }
-
-    public Category(long categoryId, String name) {
-        this.categoryId = categoryId;
-        this.name = name;
     }
 
     public long getCategoryId() {

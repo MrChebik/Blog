@@ -1,6 +1,5 @@
 package ru.mrchebik.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +7,7 @@ import ru.mrchebik.model.Reader;
 import ru.mrchebik.repository.ReaderRepository;
 import ru.mrchebik.service.ReaderService;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class ReaderServiceImpl implements ReaderService {
-    @Autowired
+    @Resource
     private ReaderRepository readerRepository;
 
     @Override
@@ -39,26 +38,12 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public List<Reader> findAllMain(long userIdMain) {
-        List<Reader> readers = new ArrayList<>();
-        for(Object[] object : readerRepository.findAllMain(userIdMain)) {
-            long id = Long.parseLong(String.valueOf(object[0]));
-            long readerId = Long.parseLong(String.valueOf(object[1]));
-
-            readers.add(new Reader(id, userIdMain, readerId));
-        }
-        return readers;
+        return readerRepository.findAllMain(userIdMain);
     }
 
     @Override
     public List<Reader> findAllFollower(long userIdFollower) {
-        List<Reader> readers = new ArrayList<>();
-        for(Object[] object : readerRepository.findAllFollower(userIdFollower)) {
-            long id = Long.parseLong(String.valueOf(object[0]));
-            long userId = Long.parseLong(String.valueOf(object[1]));
-
-            readers.add(new Reader(id, userId, userIdFollower));
-        }
-        return readers;
+        return readerRepository.findAllFollower(userIdFollower);
     }
 
     @Override

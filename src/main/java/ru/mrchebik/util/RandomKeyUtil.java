@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Created by mrchebik on 17.01.17.
  */
-public class Utils {
+public class RandomKeyUtil {
     private static Random random = new Random();
     private static String code;
 

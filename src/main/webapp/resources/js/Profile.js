@@ -4,7 +4,7 @@
 var error = 1;
 
 function checkSetting(elem) {
-    if (elem.name == 'username') {
+    if (elem.name == 'username' || elem.name == 'oldPasswordUser') {
         if (elem.value.length < 4 || elem.value.length > 50) {
             elem.style.borderColor = 'red';
             error = 1;

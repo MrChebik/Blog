@@ -14,8 +14,8 @@ import java.util.Set;
  * Created by mrchebik on 14.01.17.
  */
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("select post.postId, post.title, post.text, post.date from ru.mrchebik.model.Post post where post.user.userId = :userId")
-    List<Object[]> findByUser(@Param("userId") long id);
+    @Query("select post from ru.mrchebik.model.Post post where post.user.userId = :userId")
+    List<Post> findByUser(@Param("userId") long id);
 
     @Query("select max(post.postId) from ru.mrchebik.model.Post post where post.user.userId = :userId")
     long findLastPostId(@Param("userId") long id);

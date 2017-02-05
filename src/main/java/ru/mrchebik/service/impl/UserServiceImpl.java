@@ -1,6 +1,5 @@
 package ru.mrchebik.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -11,6 +10,7 @@ import ru.mrchebik.repository.RoleRepository;
 import ru.mrchebik.repository.UserRepository;
 import ru.mrchebik.service.UserService;
 
+import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 
@@ -21,11 +21,11 @@ import java.util.List;
 @Repository
 @Transactional
 public class UserServiceImpl implements UserService {
-    @Autowired
+    @Resource
     private UserRepository userRepository;
-    @Autowired
+    @Resource
     private RoleRepository roleRepository;
-    @Autowired
+    @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUser(final String username) {
+    public User findByUsername(final String username) {
         return userRepository.findByName(username);
     }
 

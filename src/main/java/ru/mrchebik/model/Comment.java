@@ -11,31 +11,22 @@ import java.util.Date;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true)
     private long commentId;
 
     @Column(nullable = false)
     private String text;
 
-    @Column(nullable = false)
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId", nullable = false)
+    @JoinColumn(name = "postId")
     private Post post;
 
     public Comment() {
-    }
-
-    public Comment(User user, long commentId, String text, Date date) {
-        this.user = user;
-        this.commentId = commentId;
-        this.text = text;
-        this.date = date;
     }
 
     public Comment(User user, Post post, String text, Date date) {

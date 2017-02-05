@@ -14,7 +14,7 @@ public interface UserService {
     void changeEmail(String email, String newEmail);
     User findOne(long userId);
     User findByEmail(String email);
-    User findUser(String username);
+    User findByUsername(String username);
     List<User> findUsers();
     void remove(long id);
 }

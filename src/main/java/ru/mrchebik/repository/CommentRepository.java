@@ -12,8 +12,8 @@ import java.util.List;
  * Created by mrchebik on 14.01.17.
  */
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query("select comment.user.userId, comment.commentId, comment.text, comment.date from ru.mrchebik.model.Comment comment where comment.post.postId = :postId")
-    List<Object[]> findByUser(@Param("postId") long id);
+    @Query("select comment from ru.mrchebik.model.Comment comment where comment.post.postId = :postId")
+    List<Comment> findByUser(@Param("postId") long id);
 
     @Modifying
     @Query("update ru.mrchebik.model.Comment comment set comment.text = :text where comment.commentId = :commentId")

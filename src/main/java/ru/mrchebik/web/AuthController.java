@@ -2,15 +2,12 @@ package ru.mrchebik.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.mrchebik.model.User;
 import ru.mrchebik.run.Run;
 import ru.mrchebik.service.SecurityService;
 import ru.mrchebik.service.UserService;
-import ru.mrchebik.session.UserSession;
+import ru.mrchebik.session.GuestSession;
 
 import javax.annotation.Resource;
 
@@ -21,6 +18,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by mrchebik on 14.01.17.
  */
 @Controller
+@SessionAttributes("username")
 @RequestMapping("/auth")
 public class AuthController {
     @Resource
@@ -76,8 +74,8 @@ public class AuthController {
 
     @RequestMapping(value = "/check", method = POST)
     public String checkCodeFromEmail(@RequestParam(value = "code") String code) {
-        if (UserSession.getCode().equalsIgnoreCase(code)) {
-            return "redirect:/auth/newPassword/" + UserSession.getCode();
+        if (GuestSession.getCode().equalsIgnoreCase(code)) {
+            return "redirect:/auth/newPassword/" + GuestSession.getCode();
         }
 
         return "redirect:/auth/forgot";
@@ -91,9 +89,9 @@ public class AuthController {
     @RequestMapping(value = "/newPassword/{code}", method = POST)
     public String createANewPassword(@RequestParam(value = "password") String password,
                                      @PathVariable String code) {
-        if (UserSession.getCode().equalsIgnoreCase(code)) {
-            userService.changePassword(UserSession.getEmail(), password);
-            User currentUser = userService.findByEmail(UserSession.getEmail());
+        if (GuestSession.getCode().equalsIgnoreCase(code)) {
+            userService.changePassword(GuestSession.getEmail(), password);
+            User currentUser = userService.findByEmail(GuestSession.getEmail());
             securityService.autologin(currentUser.getUsername(), password);
         } else {
             return "redirect:/";

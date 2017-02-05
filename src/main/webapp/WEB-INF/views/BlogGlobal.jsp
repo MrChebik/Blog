@@ -27,7 +27,7 @@
         <div class="bar">
             <ul id="navbar">
                 <li onclick="window.location.href='/blog/';"><span>Home</span></li>
-                <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
+                <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
                 <li onclick="window.location.href='/blog/news';"><span>News</span></li>
                 <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
                 <li onclick="logout()"><span>Logout</span></li>
@@ -57,13 +57,13 @@
                 <form id="form1" method="get">
                     <c:forEach items="${posts}" var="post" >
                         <div class="postBox">
-                            <div class="categoryBox">
-                                ${categoryPath}
-                            </div>
                             <div class="titleBox fake-link" onclick="window.location.href='/blog/${username}/post/${post.postId}'">
                                 ${post.title}
                             </div>
                             <hr>
+                            <div class="categoryBox">
+                                ${categoriesPath.get(post.postId)}
+                            </div>
                             <div class="textBox">
                                 ${post.text}
                             </div>

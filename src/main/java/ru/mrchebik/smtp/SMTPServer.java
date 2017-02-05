@@ -1,9 +1,11 @@
 package ru.mrchebik.smtp;
 
+import ru.mrchebik.session.GuestSession;
 import ru.mrchebik.session.UserSession;
 import ru.mrchebik.util.EmailUtil;
-import ru.mrchebik.util.Utils;
+import ru.mrchebik.util.RandomKeyUtil;
 
+import javax.annotation.Resource;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -14,6 +16,9 @@ import java.util.Properties;
  * Created by mrchebik on 17.01.17.
  */
 public class SMTPServer {
+    @Resource
+    private UserSession userSession;
+
     public SMTPServer(String toEmail) throws IOException {
         final String fromEmail = "YourEmail";
         final String password = "password";
@@ -34,15 +39,15 @@ public class SMTPServer {
 
         Session session = Session.getDefaultInstance(props, auth);
 
-        UserSession.setCode(Utils.generateCode());
-        UserSession.setEmail(toEmail);
+        GuestSession.setCode(RandomKeyUtil.generateCode());
+        GuestSession.setEmail(toEmail);
 
         EmailUtil.sendEmail(session,
                 fromEmail,
                 toEmail,
                 "NoReply - verify code",
                 "You sent a request to reset password.\n" +
-                        "Your code: " + UserSession.getCode() + "\n" +
+                        "Your code: " + GuestSession.getCode() + "\n" +
                         "If you didn't do it, please ignore this message.");
     }
 
@@ -69,7 +74,7 @@ public class SMTPServer {
         EmailUtil.sendEmail(session,
                 fromEmail,
                 toEmail,
-                "NoReply - new post from " + UserSession.getUsername(),
+                "NoReply - new post from " + userSession.getUser().getUsername(),
                 "Your writer wrote a new post. Read more: " + url);
     }
 }

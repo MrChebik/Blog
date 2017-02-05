@@ -12,29 +12,28 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
     private long userId;
 
-    @Column(unique = true, nullable = false, length = 60)
+    @Column(unique = true, length = 60)
     private String username;
 
-    @Column(nullable = false, length = 60)
+    @Column(length = 60)
     private String password;
 
-    @Column(unique = true, nullable = false, length = 60)
+    @Column(unique = true, length = 60)
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Post> posts = new HashSet<Post>(0);
 
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>(0);
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Reader> readers;
 
     public User() {

@@ -2,6 +2,7 @@ package ru.mrchebik.session;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import ru.mrchebik.model.User;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,49 +13,31 @@ import java.util.List;
 @Component
 @Scope("session")
 public class UserSession {
-    private static String code;
-    private static int pages;
-    private static int count = 10;
-    private static String email;
-    private static String username;
+    private int pages;
+    private int count = 10;
+    private User user;
 
-    public static String getCode() {
-        return code;
-    }
-
-    public static void setCode(String code) {
-        UserSession.code = code;
-    }
-
-    public static int getPages() {
+    public int getPages() {
         return pages;
     }
 
-    public static void setPages(List list, int count) {
+    public void setPages(List list, int count) {
         pages = BigDecimal.valueOf((double) list.size() / count).setScale(0, BigDecimal.ROUND_CEILING).intValue();
     }
 
-    public static String getEmail() {
-        return email;
-    }
-
-    public static void setEmail(String email) {
-        UserSession.email = email;
-    }
-
-    public static int getCount() {
+    public int getCount() {
         return count;
     }
 
-    public static void setCount(int count) {
-        UserSession.count = count;
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public static String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public static void setUsername(String username) {
-        UserSession.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

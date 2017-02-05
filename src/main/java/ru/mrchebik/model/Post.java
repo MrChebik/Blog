@@ -14,24 +14,22 @@ import java.util.Set;
 public class Post implements Comparable<Post> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true)
     private long postId;
 
-    @Column(nullable = false, length = 25)
+    @Column(length = 25)
     private String title;
 
     @Column(nullable = false, length = 30000)
     private String text;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
     @JoinTable(name = "category_post", joinColumns = @JoinColumn(name = "categoryId"), inverseJoinColumns = @JoinColumn(name = "postId"))
     private Set<Category> categories = new HashSet<>();
 
-    @Column(nullable = false)
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId")
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
@@ -62,6 +60,14 @@ public class Post implements Comparable<Post> {
         this.postId = postId;
         this.title = title;
         this.text = text;
+        this.date = date;
+    }
+
+    public Post(long postId, String title, String text, Set<Category> categories, Date date) {
+        this.postId = postId;
+        this.title = title;
+        this.text = text;
+        this.categories = categories;
         this.date = date;
     }
 

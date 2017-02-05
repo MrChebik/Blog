@@ -38,7 +38,7 @@
     <div class="bar">
         <ul id="navbar">
             <li onclick="window.location.href='/blog/';"><span>Home</span></li>
-            <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
+            <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
             <li onclick="window.location.href='/blog/news';"><span>News</span></li>
             <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
             <li onclick="logout()"><span>Logout</span></li>
@@ -46,7 +46,7 @@
     </div>
 </div>
 <div class="center">
-    <c:if test="${user.username == username}">
+    <c:if test="${user.username == username0}">
         <div class="menu">
             <div class="editButton" onclick="window.location.href='/blog/post/${post.postId}/edit'">
                 Edit post
@@ -75,11 +75,12 @@
             <hr class="date">
             <div class="commentBox">
                 <c:choose>
-                    <c:when test="${commentText != null}">
+                    <c:when test="${commentEdit != null}">
                         <div class="comment">
                             <div class="commentText">
-                                <form id="form3" method="post">
-                                    <textarea id="textComment" name="text" required placeholder="Text">${commentText}</textarea>
+                                <form id="form3" action="/blog/post/${post.postId}/comment/edit?id=${commentEdit.commentId}" method="post">
+                                    <textarea id="textComment" name="text" required placeholder="Text">${commentEdit.text}</textarea>
+                                    <input type="hidden" name="username" value="${username}">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                 </form>
                             </div>
@@ -91,21 +92,21 @@
                                 <c:forEach items="${comments}" var="comment" >
                                     <div class="comment">
                                         <div class="commentUser">
-                                                ${comment.user.username}
+                                            ${comment.user.username}
                                         </div>
                                         <div class="commentText">
-                                                ${comment.text}
+                                            ${comment.text}
                                         </div>
                                         <div class="commentDate">
-                                                ${comment.date}
+                                            ${comment.date}
                                         </div>
                                         <c:if test="${user.username == comment.user.username}">
-                                            <div class="edit fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/edit'">
+                                            <div class="edit fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/edit?id=${comment.commentId}'">
                                                 Edit
                                             </div>
                                         </c:if>
-                                        <c:if test="${user.username == username || user.username == comment.user.username}">
-                                            <div class="remove fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/${comment.commentId}/remove'">
+                                        <c:if test="${user.username == username0 || user.username == comment.user.username}">
+                                            <div class="remove fake-link" onclick="window.location.href='/blog/post/${post.postId}/comment/remove?id=${comment.commentId}&user=${username}'">
                                                 Remove
                                             </div>
                                         </c:if>

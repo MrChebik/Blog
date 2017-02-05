@@ -33,7 +33,7 @@
     <div class="bar">
         <ul id="navbar">
             <li onclick="window.location.href='/blog/';"><span>Home</span></li>
-            <li onclick="window.location.href='/blog/{username}/';"><span>View</span></li>
+            <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
             <li onclick="window.location.href='/blog/news/';"><span>News</span></li>
             <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
             <li onclick="logout()"><span>Logout</span></li>
@@ -41,37 +41,37 @@
     </div>
 </div>
 <div class="center">
-        <div class="postsBox">
-            <c:if test="${maxLevel != -2}">
-                <select name="categories" multiple>
-                    <c:forEach items="${categories}" var="category">
-                        <option id="${category.categoryId}">
-                            ${category.name}
-                        </option>
-                    </c:forEach>
-                </select>
-            </c:if>
-            <div class="postCreateBox">
-                <form id="form1" method="post">
-                    <input id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
-                    <textarea id="text" name="text" placeholder="Text">${post.text}</textarea>
-                    <input type="hidden" name="categoriesId">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                </form>
-            </div>
-            <div class="menu">
-                <div class="addButton" onclick="checkError()">
-                    <c:choose>
-                        <c:when test="${post.title != null}">
-                            Save post
-                        </c:when>
-                        <c:otherwise>
-                            Add post
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+    <div class="postsBox">
+        <c:if test="${maxLevel != -2}">
+            <select name="categories" multiple>
+                <c:forEach items="${categories}" var="category">
+                    <option id="${category.categoryId}">
+                        ${category.name}
+                    </option>
+                </c:forEach>
+            </select>
+        </c:if>
+        <div class="postCreateBox">
+            <form id="form1" method="post">
+                <input id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
+                <textarea id="text" name="text" placeholder="Text">${post.text}</textarea>
+                <input type="hidden" name="categoriesId">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            </form>
+        </div>
+        <div class="menu">
+            <div class="addButton" onclick="checkError()">
+                <c:choose>
+                    <c:when test="${post.title != null}">
+                        Save post
+                    </c:when>
+                    <c:otherwise>
+                        Add post
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
+    </div>
 </div>
 <div class="footer">
     <hr class="footer">

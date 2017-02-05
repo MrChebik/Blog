@@ -42,6 +42,7 @@
 <div class="center">
     <div class="postsBox">
         <form id="form1" method="post">
+            <input type="password" name="oldPasswordUser" placeholder="Old password" oninput="checkSetting(this)">
             <input type="text" name="username" placeholder="Username" oninput="checkSetting(this)">
             <div class="editButton" onclick="checkError('username')">Edit username</div>
             <hr>

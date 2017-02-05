@@ -1,6 +1,5 @@
 package ru.mrchebik.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +7,7 @@ import ru.mrchebik.model.Category;
 import ru.mrchebik.repository.CategoryRepository;
 import ru.mrchebik.service.CategoryService;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
-    @Autowired
+    @Resource
     private CategoryRepository categoryRepository;
 
     @Override
@@ -38,46 +37,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByParentIdThroughCategoryId(long prntId, long userId) {
-        Category category = null;
-        for(Object[] object : categoryRepository.findByParentIdThroughCategoryId(prntId, userId)) {
-            long categoryId = Long.parseLong(String.valueOf(object[0]));
-            String name = String.valueOf(object[1]);
-            long level = Long.parseLong(String.valueOf(object[2]));
-            long parentId = Long.parseLong(String.valueOf(object[3]));
-            
-            category = new Category(categoryId, level, name, parentId);
-        }
-
-        return category;
+        return categoryRepository.findByParentIdThroughCategoryId(prntId, userId);
     }
 
     @Override
     public List<Category> findByParentId(long prntId, long userId) {
-        List<Category> categories = new ArrayList<>();
-        for(Object[] object : categoryRepository.findByParentId(prntId, userId)) {
-            long categoryId = Long.parseLong(String.valueOf(object[0]));
-            String name = String.valueOf(object[1]);
-            long level = Long.parseLong(String.valueOf(object[2]));
-            long parentId = Long.parseLong(String.valueOf(object[3]));
-
-            categories.add(new Category(categoryId, level, name, parentId));
-        }
-
-        return categories;
+        return categoryRepository.findByParentId(prntId, userId);
     }
 
     @Override
     public List<Category> findAll(long userId) {
-        List<Category> categories = new ArrayList<>();
-        for(Object[] object : categoryRepository.findAll(userId)) {
-            long categoryId = Long.parseLong(String.valueOf(object[0]));
-            String name = String.valueOf(object[1]);
-            long level = Long.parseLong(String.valueOf(object[2]));
-            long parentId = Long.parseLong(String.valueOf(object[3]));
-
-            categories.add(new Category(categoryId, level, name, parentId));
-        }
-        return categories;
+        return categoryRepository.findAll(userId);
     }
 
     @Override

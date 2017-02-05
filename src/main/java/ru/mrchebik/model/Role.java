@@ -11,10 +11,9 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
     private long roleId;
 
-    @Column(nullable = false, unique = true, length = 16)
+    @Column(unique = true, length = 16)
     private String name;
 
     @ManyToMany(mappedBy = "roles")

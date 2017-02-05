@@ -5,19 +5,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.mrchebik.model.Category;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import ru.mrchebik.model.Comment;
 import ru.mrchebik.model.Post;
 import ru.mrchebik.model.Reader;
 import ru.mrchebik.service.*;
 import ru.mrchebik.session.UserSession;
+import ru.mrchebik.util.ScanCategoryUtil;
 
 import javax.annotation.Resource;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -26,8 +24,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by mrchebik on 14.01.17.
  */
 @Controller
+@SessionAttributes("username")
 @RequestMapping("/blog")
 public class BlogController {
+    @Resource
+    private UserSession userSession;
     @Resource
     private PostService postService;
     @Resource
@@ -44,48 +45,33 @@ public class BlogController {
                         @RequestParam(value = "hide", defaultValue = "1") int page,
                         Principal principal,
                         Model model) {
-        UserSession.setUsername(principal.getName());
-
-        List<Post> posts;
-        if (username != null) {
-            posts = new ArrayList<>(postService.findPosts(userService.findUser(username).getUserId()));
-        } else {
-            posts = new ArrayList<>(postService.findPosts(userService.findUser(principal.getName()).getUserId()));
+        if (userSession.getUser() == null) {
+            userSession.setUser(userService.findByUsername(principal.getName()));
         }
-        UserSession.setPages(posts, UserSession.getCount());
 
-        if (posts.size() > UserSession.getCount()) {
-            if (page * UserSession.getCount() > posts.size()) {
-                posts = posts.subList((page - 1) * UserSession.getCount(), posts.size());
+        List<Post> posts = new ArrayList<>(postService.findPosts(username != null ? userService.findByUsername(username).getUserId() : userSession.getUser().getUserId()));
+        userSession.setPages(posts, userSession.getCount());
+
+        if (posts.size() > userSession.getCount()) {
+            if (page * userSession.getCount() > posts.size()) {
+                posts = posts.subList((page - 1) * userSession.getCount(), posts.size());
             } else {
-                posts = posts.subList((page - 1) * UserSession.getCount(), page * UserSession.getCount());
+                posts = posts.subList((page - 1) * userSession.getCount(), page * userSession.getCount());
             }
         }
-        model.addAttribute("userBlog", username);
 
         if (username != null) {
+            Map<Long, String> categoriesPath = new HashMap<>();
             for (Post post : posts) {
                 try {
-                    Category category = post.getCategory().iterator().next();
-                    String parseCategories = " > " + category.getName();
-                    long level = category.getLevel();
-                    long catParentId = category.getParentId();
-                    while (level != -1) {
-                        category = categoryService.findByParentIdThroughCategoryId(catParentId, userService.findUser(principal.getName()).getUserId());
-                        parseCategories = " > " + category.getName() + parseCategories;
-                        level = category.getLevel();
-                        catParentId = category.getCategoryId();
-                    }
-                    parseCategories = parseCategories.substring(3);
-                    model.addAttribute("categoryPath", parseCategories);
+                    categoriesPath.put(post.getPostId(), ScanCategoryUtil.getPaths(categoryService, post, userSession.getUser().getUserId()));
                 } catch (NoSuchElementException ignored) {
                 }
             }
-        }
+            model.addAttribute("categoriesPath", categoriesPath);
 
-        if (username != null) {
             try {
-                if (readerService.findOne(userService.findUser(username).getUserId(), userService.findUser(principal.getName()).getUserId()) == null) {
+                if (readerService.findOne(userService.findByUsername(username).getUserId(), userSession.getUser().getUserId()) == null) {
                     model.addAttribute("subscribe", "false");
                 } else {
                     model.addAttribute("subscribe", "true");
@@ -94,15 +80,17 @@ public class BlogController {
             }
         }
 
-        model.addAttribute("username", principal.getName());
         for (Post post : posts) {
             if (post.getText().length() > 500) {
                 post.setText(post.getText().substring(0, 500) + "...");
             }
         }
+
+        model.addAttribute("userBlog", username);
+        model.addAttribute("username", userSession.getUser().getUsername());
         model.addAttribute("posts", posts);
         model.addAttribute("page", page);
-        model.addAttribute("pages", UserSession.getPages());
+        model.addAttribute("pages", userSession.getPages());
 
         if (username != null) {
             return "BlogGlobal";
@@ -115,55 +103,23 @@ public class BlogController {
     public String postPage(@PathVariable String id,
                            @PathVariable String username,
                            @RequestParam(value = "hide", defaultValue = "1") int page,
-                           @RequestParam(value = "hideId", defaultValue = "0") long commentId,
-                           Principal principal,
                            Model model) {
         int idFromString = Integer.parseInt(id);
 
-        model.addAttribute("username", username);
-        try {
-            model.addAttribute("user", userService.findUser(principal.getName()));
-        } catch (Exception ignored) {
-        }
-        model.addAttribute("post", postService.findPost(idFromString));
+        model.addAttribute("username0", username);
+        model.addAttribute("user", userSession.getUser());
+
+        Post post = postService.findPost(idFromString);
+        model.addAttribute("post", post);
 
         try {
-            Category category = postService.findPost(idFromString).getCategory().iterator().next();
-            String parseCategories = " > " + category.getName();
-            long level = category.getLevel();
-            long catParentId = category.getParentId();
-            while (level != -1) {
-                category = categoryService.findByParentIdThroughCategoryId(catParentId, userService.findUser(principal.getName()).getUserId());
-                parseCategories = " > " + category.getName() + parseCategories;
-                level = category.getLevel();
-                catParentId = category.getCategoryId();
-            }
-            parseCategories = parseCategories.substring(3);
-            model.addAttribute("categoryPath", parseCategories);
+            model.addAttribute("categoryPath", ScanCategoryUtil.getPaths(categoryService, post, userSession.getUser().getUserId()));
         } catch (NoSuchElementException ignored) {
         }
 
         List<Comment> comments = new ArrayList<>(commentService.findComments(idFromString));
 
-        if (commentId != 0) {
-            if (page != 1 &&
-                    page == UserSession.getPages() &&
-                    (UserSession.getPages() * 20) - 19 == comments.size() &&
-                    comments.get(comments.size() - 1).getCommentId() == commentId) {
-                page--;
-                comments.remove(comments.size() - 1);
-            }
-
-            for (int i = 0; i < comments.size(); i++) {
-                if (comments.get(i).getCommentId() == commentId) {
-                    comments.remove(i);
-                    break;
-                }
-            }
-            postService.remove(commentId);
-        }
-
-        UserSession.setPages(comments, 20);
+        userSession.setPages(comments, 20);
 
         if (comments.size() > 20) {
             if (page * 20 > comments.size()) {
@@ -172,10 +128,11 @@ public class BlogController {
                 comments = comments.subList((page - 1) * 20, page * 20);
             }
         }
+
         model.addAttribute("comments", comments);
         model.addAttribute("category", postService.findPost(idFromString).getCategory());
         model.addAttribute("page", page);
-        model.addAttribute("pages", UserSession.getPages());
+        model.addAttribute("pages", userSession.getPages());
 
         return "Post";
     }
@@ -184,25 +141,22 @@ public class BlogController {
     public String addComment(@PathVariable String id,
                              @PathVariable String username,
                              @RequestParam String text,
-                             @RequestParam(value = "hide") int page,
-                             Principal principal) {
-        commentService.addComment(new Comment(userService.findUser(principal.getName()), postService.findPost(Integer.parseInt(id)), text, new Date()));
+                             @RequestParam(value = "hide") int page) {
+        commentService.addComment(new Comment(userSession.getUser(), postService.findPost(Integer.parseInt(id)), text, new Date()));
 
         return "redirect:/blog/" + username + "/post/" + id + "?hide=" + page;
     }
 
     @RequestMapping(value = "/{username}/subscribe", method = GET)
-    public String subscribe(@RequestParam String user,
-                            Principal principal) {
-        readerService.add(new Reader(userService.findUser(principal.getName()).getUserId(), userService.findUser(user)));
+    public String subscribe(@RequestParam String user) {
+        readerService.add(new Reader(userSession.getUser().getUserId(), userService.findByUsername(user)));
 
         return "redirect:/blog/" + user + "/";
     }
 
     @RequestMapping(value = "/{username}/unsubscribe", method = GET)
-    public String unsubscribe(@RequestParam String user,
-                              Principal principal) {
-        readerService.delete(readerService.findOne(userService.findUser(user).getUserId(), userService.findUser(principal.getName()).getUserId()).getId());
+    public String unsubscribe(@RequestParam String user) {
+        readerService.delete(readerService.findOne(userService.findByUsername(user).getUserId(), userSession.getUser().getUserId()).getId());
 
         return "redirect:/blog/" + user + "/";
     }
