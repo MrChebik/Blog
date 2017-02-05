@@ -28,11 +28,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void update(Post post) {
-        postRepository.updatePost(post.getPostId(), post.getTitle(), post.getText());
-    }
-
-    @Override
     public long findLastPostId(long userId) {
         return postRepository.findLastPostId(userId);
     }

@@ -41,44 +41,37 @@
     </div>
 </div>
 <div class="center">
-    <div class="postsBox">
-        <c:if test="${maxLevel != -2}">
-            <c:forEach var="i" begin="0" end="${maxLevel+1}">
-                <div id="box${i}" style="display: ${i == 0 ? 'block' : 'none'};">
-                    <select id="select${i}" onclick="checkSelects(this, ${i}, ${maxLevel})">
-                        <option selected class="space-display"></option>
-                        <c:forEach items="${categories}" var="category">
-                            <c:if test="${category.level == i-1}">
-                                <option id="${category.categoryId}" data-name="${category.parentId}">
-                                    ${category.name}
-                                </option>
-                            </c:if>
-                        </c:forEach>
-                    </select>
+        <div class="postsBox">
+            <c:if test="${maxLevel != -2}">
+                <select name="categories" multiple>
+                    <c:forEach items="${categories}" var="category">
+                        <option id="${category.categoryId}">
+                            ${category.name}
+                        </option>
+                    </c:forEach>
+                </select>
+            </c:if>
+            <div class="postCreateBox">
+                <form id="form1" method="post">
+                    <input id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
+                    <textarea id="text" name="text" placeholder="Text">${post.text}</textarea>
+                    <input type="hidden" name="categoriesId">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                </form>
+            </div>
+            <div class="menu">
+                <div class="addButton" onclick="checkError()">
+                    <c:choose>
+                        <c:when test="${post.title != null}">
+                            Save post
+                        </c:when>
+                        <c:otherwise>
+                            Add post
+                        </c:otherwise>
+                    </c:choose>
                 </div>
-            </c:forEach>
-        </c:if>
-        <div class="postCreateBox">
-            <form id="form1" method="post">
-                <input id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
-                <textarea id="text" name="text" placeholder="Text">${post.text}</textarea>
-                <input id="catId" name="catId" type="hidden">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            </form>
-        </div>
-        <div class="menu">
-            <div class="addButton" onclick="checkError(${maxLevel})">
-                <c:choose>
-                    <c:when test="${post.title != null}">
-                        Save post
-                    </c:when>
-                    <c:otherwise>
-                        Add post
-                    </c:otherwise>
-                </c:choose>
             </div>
         </div>
-    </div>
 </div>
 <div class="footer">
     <hr class="footer">

@@ -44,29 +44,25 @@ public class PostController {
                           Model model) {
         if (principal != null) {
             model.addAttribute("Username", principal.getName());
-
-            List<Category> categories = new ArrayList<>(categoryService.findAll(userService.findUser(principal.getName()).getUserId()));
-            model.addAttribute("categories", categories);
-
-            try {
-                model.addAttribute("maxLevel", categoryService.findMaxLevel(userService.findUser(principal.getName()).getUserId()));
-            } catch (NullPointerException e) {
-                model.addAttribute("maxLevel", -2);
-            }
+            model.addAttribute("categories", categoryService.findAll(userService.findUser(principal.getName()).getUserId()));
         }
 
         return "AddPost";
     }
 
     @RequestMapping(value = "/add", method = POST)
-    public String addPost(@RequestParam String title,
+    public String addPost(@RequestParam String categoriesId,
+                          @RequestParam String title,
                           @RequestParam String text,
-                          @RequestParam String catId,
                           Principal principal) {
-        if (catId.equals("")) {
+        if (categoriesId.equals("")) {
             postService.add(new Post(userService.findUser(principal.getName()), title, text, new Date()));
         } else {
-            postService.add(new Post(userService.findUser(principal.getName()), categoryService.findById(Long.parseLong(catId)), title, text, new Date()));
+            List<Category> categories = new ArrayList<>();
+            for (String category : categoriesId.split(",")) {
+                categories.add(categoryService.findById(Long.parseLong(category)));
+            }
+            postService.add(new Post(userService.findUser(principal.getName()), categories, title, text, new Date()));
         }
 
         long postId = postService.findLastPostId(userService.findUser(principal.getName()).getUserId());
@@ -79,17 +75,29 @@ public class PostController {
 
     @RequestMapping(value = "{id}/edit", method = GET)
     public String editPage(@PathVariable String id,
+                           Principal principal,
                            Model model) {
         model.addAttribute("post", postService.findPost(Integer.parseInt(id)));
+        model.addAttribute("categories", categoryService.findAll(userService.findUser(principal.getName()).getUserId()));
 
         return "AddPost";
     }
 
     @RequestMapping(value = "{id}/edit", method = POST)
     public String saveEdit(@PathVariable String id,
+                           @RequestParam String categoriesId,
                            @RequestParam String title,
                            @RequestParam String text) {
-        postService.update(new Post(Integer.parseInt(id), title, text));
+        Post post = postService.findPost(Long.parseLong(id));
+        post.getCategory().clear();
+        post.setTitle(title);
+        post.setText(text);
+        if (!categoriesId.equals("")) {
+            for (String category : categoriesId.split(",")) {
+                post.getCategory().add(categoryService.findById(Long.parseLong(category)));
+            }
+        }
+        postService.add(post);
 
         return "redirect:/blog/";
     }

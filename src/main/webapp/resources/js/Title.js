@@ -2,7 +2,6 @@
  * Created by mrchebik on 25.01.17.
  */
 var error = 1;
-var elements = 0;
 
 function check() {
     var element = document.getElementById('title');
@@ -16,50 +15,20 @@ function check() {
     }
 }
 
-function checkError(maxLevel) {
+function checkError() {
     if (error == 0) {
-        for (i = maxLevel+1; i >= 0; i--) {
-            if (document.getElementById('box' + i).style.display == 'block') {
-                if (document.getElementById('select' + i).options[document.getElementById('select' + i).selectedIndex].id != '') {
-                    document.getElementById('catId').value = document.getElementById('select' + i).options[document.getElementById('select' + (i)).selectedIndex].id;
+        var element = document.getElementsByName('categories')[0].options;
+        for (i = 0; i < element.length; i++) {
+            if (element[i].selected == true) {
+                document.getElementsByName('categoriesId')[0].value += element[i].id;
+                if (i != element.length - 1) {
+                    document.getElementsByName('categoriesId')[0].value += ',';
                 }
             }
-        } 
-        
+        }
         document.getElementById("form1").submit();
     } else {
         alert("The title must not be red, have not more than 50 chars and not be empty.");
-    }
-}
-
-function checkSelects(sel, i, maxLevel) {
-    if (typeof(sel.selectedIndex) != 'undefined') {
-        elements = 0;
-        
-        for (j = i+2; j <= maxLevel+1; j++) {
-            document.getElementById('box' + j).style.display = 'none';
-        }
-
-        var temp = sel.options[sel.selectedIndex].id;
-        var nextSelect = document.getElementById('select' + (i+1));
-        var lengthNextSelect = nextSelect.querySelectorAll('option').length;
-        var nextBox = document.getElementById('box' + (i+1));
-
-        nextSelect.querySelectorAll('option').forEach(function(elem) {
-            if (elem.getAttribute('data-name') == temp) {
-                elem.style.display = 'block'}
-            else {
-                elem.style.display = 'none';
-                elements++;
-            }
-        });
-
-        if (lengthNextSelect != elements) {
-            nextBox.style.display = 'block';
-            nextSelect.value = '';
-        } else {
-            nextBox.style.display = 'none';
-        }
     }
 }
 

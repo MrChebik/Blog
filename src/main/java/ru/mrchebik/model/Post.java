@@ -3,6 +3,7 @@ package ru.mrchebik.model;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -46,9 +47,12 @@ public class Post implements Comparable<Post> {
         this.date = date;
     }
 
-    public Post(User user, Category category, String title, String text, Date date) {
+    public Post(User user, List<Category> categories, String title, String text, Date date) {
         this.user = user;
-        this.categories.add(category);
+        this.categories.clear();
+        for (Category category : categories) {
+            this.categories.add(category);
+        }
         this.title = title;
         this.text = text;
         this.date = date;

@@ -9,7 +9,6 @@ import java.util.List;
  */
 public interface PostService {
     Post add(Post post);
-    void update(Post post);
     long findLastPostId(long userId);
     List<Post> findPosts(long userId);
     Post findPost(long postId);
