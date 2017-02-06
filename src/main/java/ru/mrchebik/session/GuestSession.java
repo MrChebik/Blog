@@ -9,22 +9,22 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("session")
 public class GuestSession {
-    private static String code;
-    private static String email;
+    private String code;
+    private String email;
 
-    public static String getCode() {
+    public String getCode() {
         return code;
     }
 
-    public static void setCode(String code) {
-        GuestSession.code = code;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public static String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public static void setEmail(String email) {
-        GuestSession.email = email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

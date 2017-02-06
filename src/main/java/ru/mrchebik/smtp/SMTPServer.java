@@ -18,6 +18,8 @@ import java.util.Properties;
 public class SMTPServer {
     @Resource
     private UserSession userSession;
+    @Resource
+    private GuestSession guestSession;
 
     public SMTPServer(String toEmail) throws IOException {
         final String fromEmail = "YourEmail";
@@ -39,15 +41,15 @@ public class SMTPServer {
 
         Session session = Session.getDefaultInstance(props, auth);
 
-        GuestSession.setCode(RandomKeyUtil.generateCode());
-        GuestSession.setEmail(toEmail);
+        guestSession.setCode(RandomKeyUtil.generateCode());
+        guestSession.setEmail(toEmail);
 
         EmailUtil.sendEmail(session,
                 fromEmail,
                 toEmail,
                 "NoReply - verify code",
                 "You sent a request to reset password.\n" +
-                        "Your code: " + GuestSession.getCode() + "\n" +
+                        "Your code: " + guestSession.getCode() + "\n" +
                         "If you didn't do it, please ignore this message.");
     }
 

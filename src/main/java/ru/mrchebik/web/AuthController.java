@@ -24,6 +24,8 @@ public class AuthController {
     @Resource
     private UserService userService;
     @Resource
+    private GuestSession guestSession;
+    @Resource
     private SecurityService securityService;
 
     @RequestMapping(value = "/register", method = GET)
@@ -74,8 +76,8 @@ public class AuthController {
 
     @RequestMapping(value = "/check", method = POST)
     public String checkCodeFromEmail(@RequestParam(value = "code") String code) {
-        if (GuestSession.getCode().equalsIgnoreCase(code)) {
-            return "redirect:/auth/newPassword/" + GuestSession.getCode();
+        if (guestSession.getCode().equalsIgnoreCase(code)) {
+            return "redirect:/auth/newPassword/" + guestSession.getCode();
         }
 
         return "redirect:/auth/forgot";
@@ -89,9 +91,9 @@ public class AuthController {
     @RequestMapping(value = "/newPassword/{code}", method = POST)
     public String createANewPassword(@RequestParam(value = "password") String password,
                                      @PathVariable String code) {
-        if (GuestSession.getCode().equalsIgnoreCase(code)) {
-            userService.changePassword(GuestSession.getEmail(), password);
-            User currentUser = userService.findByEmail(GuestSession.getEmail());
+        if (guestSession.getCode().equalsIgnoreCase(code)) {
+            userService.changePassword(guestSession.getEmail(), password);
+            User currentUser = userService.findByEmail(guestSession.getEmail());
             securityService.autologin(currentUser.getUsername(), password);
         } else {
             return "redirect:/";

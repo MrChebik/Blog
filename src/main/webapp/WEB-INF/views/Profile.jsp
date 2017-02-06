@@ -55,6 +55,8 @@
             <div class="editButton" onclick="checkError('email')">Edit email</div>
             <input type="hidden" name="type">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            <hr>
+            <span class="fake-link" onclick="window.location.href='/blog/setting/delete'">Delete profile</span>
         </form>
     </div>
 </div>

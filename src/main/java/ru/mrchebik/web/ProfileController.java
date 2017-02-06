@@ -1,6 +1,9 @@
 package ru.mrchebik.web;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,8 @@ import ru.mrchebik.service.UserService;
 import ru.mrchebik.session.UserSession;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -21,7 +26,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Controller
 @SessionAttributes("username")
-@RequestMapping("/blog")
+@RequestMapping("/blog/setting")
 public class ProfileController {
     @Resource
     private UserSession userSession;
@@ -32,7 +37,7 @@ public class ProfileController {
     @Resource
     private SecurityService securityService;
 
-    @RequestMapping(value = "/setting", method = GET)
+    @RequestMapping(value = "/", method = GET)
     public String getSettingPage(Principal principal,
                                  Model model) {
         model.addAttribute("username", principal.getName());
@@ -40,7 +45,7 @@ public class ProfileController {
         return "Profile";
     }
 
-    @RequestMapping(value = "/setting", method = POST)
+    @RequestMapping(value = "/", method = POST)
     public String postSettingPage(@RequestParam(required = false) String username,
                                   @RequestParam(required = false) String oldPassword,
                                   @RequestParam(required = false) String oldPasswordUser,
@@ -67,5 +72,18 @@ public class ProfileController {
         }
 
         return "redirect:/blog/setting";
+    }
+
+    @RequestMapping(value = "/delete", method = GET)
+    public String deleteUser(HttpServletRequest request,
+                             HttpServletResponse response) {
+        userService.remove(userSession.getUser().getUserId());
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+        return "redirect:/?logout";
     }
 }
