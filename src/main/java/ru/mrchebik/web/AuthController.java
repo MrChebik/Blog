@@ -5,11 +5,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.mrchebik.model.User;
 import ru.mrchebik.run.Run;
-import ru.mrchebik.service.SecurityService;
 import ru.mrchebik.service.UserService;
 import ru.mrchebik.session.GuestSession;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -25,8 +26,6 @@ public class AuthController {
     private UserService userService;
     @Resource
     private GuestSession guestSession;
-    @Resource
-    private SecurityService securityService;
 
     @RequestMapping(value = "/register", method = GET)
     public String Get(Model model) {
@@ -36,21 +35,10 @@ public class AuthController {
 
     @RequestMapping(value = "/register", method = POST)
     public String registration(@ModelAttribute("userForm") User userForm,
-                               Model model) {
-        if (userForm.getUsername().equalsIgnoreCase("admin")) {
-            model.addAttribute("error", "AdminError");
-        } else {
-            String password;
-            try {
-                password = userForm.getPassword();
-                userService.add(userForm);
-            } catch (Exception e) {
-                model.addAttribute("error", "SQLError");
-
-                return "SignUp";
-            }
-            securityService.autologin(userForm.getUsername(), password);
-        }
+                               HttpServletRequest request) throws ServletException {
+        String password = userForm.getPassword();
+        userService.add(userForm);
+        request.login(userForm.getUsername(), password);
 
         return "redirect:/blog/";
     }
@@ -90,11 +78,11 @@ public class AuthController {
 
     @RequestMapping(value = "/newPassword/{code}", method = POST)
     public String createANewPassword(@RequestParam(value = "password") String password,
-                                     @PathVariable String code) {
+                                     @PathVariable String code,
+                                     HttpServletRequest request) throws ServletException {
         if (guestSession.getCode().equalsIgnoreCase(code)) {
             userService.changePassword(guestSession.getEmail(), password);
-            User currentUser = userService.findByEmail(guestSession.getEmail());
-            securityService.autologin(currentUser.getUsername(), password);
+            request.login(userService.findByEmail(guestSession.getEmail()).getUsername(), password);
         } else {
             return "redirect:/";
         }

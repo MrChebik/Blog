@@ -1,21 +1,17 @@
 package ru.mrchebik.web;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import ru.mrchebik.service.SecurityService;
 import ru.mrchebik.service.UserService;
 import ru.mrchebik.session.UserSession;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -34,8 +30,6 @@ public class ProfileController {
     private UserService userService;
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Resource
-    private SecurityService securityService;
 
     @RequestMapping(value = "/", method = GET)
     public String getSettingPage(Principal principal,
@@ -52,13 +46,14 @@ public class ProfileController {
                                   @RequestParam(required = false) String newPassword,
                                   @RequestParam(required = false) String email,
                                   @RequestParam String type,
-                                  Model model) {
+                                  HttpServletRequest request,
+                                  Model model) throws ServletException {
         if (type.equals("username")) {
             if (userService.findByUsername(username) == null) {
                 userService.changeUsername(userSession.getUser().getEmail(), username);
                 model.addAttribute("username", username);
                 userSession.getUser().setUsername(username);
-                securityService.autologin(username, oldPasswordUser);
+                request.login(username, oldPasswordUser);
             }
         } else if (type.equals("email")) {
             try {
@@ -75,14 +70,9 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/delete", method = GET)
-    public String deleteUser(HttpServletRequest request,
-                             HttpServletResponse response) {
+    public String deleteUser(HttpServletRequest request) throws ServletException {
         userService.remove(userSession.getUser().getUserId());
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
+        request.logout();
 
         return "redirect:/?logout";
     }
