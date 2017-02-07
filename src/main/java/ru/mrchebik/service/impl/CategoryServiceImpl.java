@@ -51,11 +51,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public long findMaxLevel(long userId) {
-        return (long) categoryRepository.findMaxLevel(userId);
-    }
-
-    @Override
     public void remove(long id) {
         categoryRepository.delete(id);
     }

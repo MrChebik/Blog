@@ -1,6 +1,6 @@
 package ru.mrchebik.service.impl;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.google.common.collect.Sets;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,6 @@ import ru.mrchebik.repository.UserRepository;
 import ru.mrchebik.service.UserService;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Created by mrchebik on 14.01.17.
@@ -31,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User add(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+        user.setRoles(Sets.newHashSet(roleRepository.findOne(1L)));
         return userRepository.saveAndFlush(user);
     }
 
@@ -68,12 +66,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void remove(long id) {
         userRepository.delete(id);
     }
