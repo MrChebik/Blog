@@ -7,23 +7,13 @@
 }
 
 .centerBox, .loginBox {
-    box-shadow: 0 0 0 7px #66CC99;
+    box-shadow: 0 0 0 7px #5Cb85c;
     border-radius: 5px;
-    width: 15%;
-}
-
-.loginBox {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-right: 10%;
 }
 
 .newsBox {
-    margin-left: 10%;
-    box-shadow: 0 0 0 3px #9999CC;
-    border-radius: 3px;
-    width: 60%;
+    box-shadow: 0 0 0 7px #9999CC;
+    border-radius: 5px;
 }
 
 .postsBox, .postBox, #label {

@@ -1,0 +1,44 @@
+.panel-default > .panel-heading {
+    text-align:center;
+}
+
+.panel-default > .panel-heading a {
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.panel-default > .panel-heading a.active{
+    font-size: 18px;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.footer hr {
+    color: #B0B0B0;
+    background-color:#B0B0B0;
+    border:0 none;
+    height:1px;
+    width: 60%;
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.logo {
+    color: #FF0033;
+    font-size: 8em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    text-align: center;
+}
+
+form {
+    margin-bottom: 0;
+}

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import ru.mrchebik.model.Post;
 import ru.mrchebik.model.Reader;
+import ru.mrchebik.model.User;
 import ru.mrchebik.service.PostService;
 import ru.mrchebik.service.ReaderService;
 import ru.mrchebik.session.UserSession;
@@ -37,6 +38,7 @@ public class IndexController {
     public String indexPage(@PathVariable(required = false) String username,
                             @RequestParam(value = "hide", defaultValue = "1") int page,
                             @RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "errorReg", required = false) String errorReg,
                             @RequestParam(value = "logout", required = false) String logout,
                             Model model) {
         if (userSession.getUser() != null) {
@@ -77,9 +79,14 @@ public class IndexController {
         if (error != null) {
             model.addAttribute(error);
         }
+        if (errorReg != null) {
+            model.addAttribute(errorReg);
+        }
         if (logout != null) {
             model.addAttribute(logout);
         }
+
+        model.addAttribute("userForm", new User());
 
         return "News";
     }

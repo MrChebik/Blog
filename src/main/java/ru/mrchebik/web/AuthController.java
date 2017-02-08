@@ -27,17 +27,16 @@ public class AuthController {
     @Resource
     private GuestSession guestSession;
 
-    @RequestMapping(value = "/register", method = GET)
-    public String Get(Model model) {
-        model.addAttribute("userForm", new User());
-        return "SignUp";
-    }
-
     @RequestMapping(value = "/register", method = POST)
     public String registration(@ModelAttribute("userForm") User userForm,
-                               HttpServletRequest request) throws ServletException {
+                               HttpServletRequest request,
+                               Model model) throws ServletException {
         String password = userForm.getPassword();
-        userService.add(userForm);
+        try {
+            userService.add(userForm);
+        } catch (Exception e) {
+            return "redirect:/?errorReg";
+        }
         request.login(userForm.getUsername(), password);
 
         return "redirect:/blog/";
