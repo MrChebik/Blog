@@ -29,12 +29,13 @@
         <remember-me data-source-ref="dataSource" />
     </http>
 
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider user-service-ref="userDetailsServiceImpl">
+    <authentication-manager>
+        <authentication-provider>
             <password-encoder ref="bcrypt" />
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT username, password, true FROM users WHERE username = ?"
+                               authorities-by-username-query="SELECT u.username, r.name FROM user_role ur, users u, role r WHERE ur.userId = u.userId and ur.roleId = r.roleId and u.username = ?"/>
         </authentication-provider>
     </authentication-manager>
-
-    <beans:bean id="userDetailsServiceImpl" class="ru.mrchebik.service.impl.UserDetailsServiceImpl" />
 
 </beans:beans>
