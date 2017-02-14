@@ -11,57 +11,57 @@
 <html>
 <head>
     <title>The Blog</title>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/default.css"/>"/>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/layout.css"/>"/>
     <script type="text/javascript" src="<c:url value="/resources/js/logout.js"/>"></script>
-    <style type="text/css">
-        .postsBox {
-            width: 80%;
-        }
-    </style>
 </head>
 <body>
 <form action="<c:url value="/logout"/>" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
-<div class="top">
-    <div class="blog">
-        Blog
-    </div>
-    <div class="bar">
-        <ul id="navbar">
-            <li onclick="window.location.href='/blog/';"><span>Home</span></li>
-            <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
-            <li onclick="window.location.href='/blog/news';"><span>News</span></li>
-            <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
-            <li onclick="logout()"><span>Logout</span></li>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="<c:url value="/blog"/>">Blog</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="/blog/${username}">Global View</a></li>
+            <li><a href="<c:url value="/blog/news"/>">News</a></li>
+            <li><a href="<c:url value="/blog/setting/"/>">Setting</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
     </div>
-</div>
-<div class="center">
-    <div class="menu">
-        <div class="categoriesButton" onclick="window.location.href='/blog/categories/-1'">
-            Categories
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 col-md-offset-3">
+            <div class="btn-group form-group">
+                <a href="<c:url value="/blog/categories/-1"/>" class="btn btn-primary" role="button">Categories</a>
+                <a href="<c:url value="/blog/post/add"/>" class="btn btn-primary" role="button">Add post</a>
+            </div>
         </div>
-        <div class="addButton" onclick="window.location.href='/blog/post/add'">
-            Add post
-        </div>
-    </div>
-    <div class="postsBox">
-        <c:choose>
-            <c:when test="${posts.size() == 0}" >
-                <b>You do not have any posts</b>
-            </c:when>
-            <c:otherwise>
-                <form id="form1" method="get">
-                    <table>
+        <div class="col-md-8 col-md-offset-2">
+            <c:choose>
+                <c:when test="${posts.size() == 0}" >
+                    <b class="text-warning">You do not have any posts!</b>
+                </c:when>
+                <c:otherwise>
+                    <table class="table table-striped table-hover">
+                        <thead>
                         <tr>
-                            <th>№</th>
-                            <th>Title</th>
-                            <th>Text</th>
-                            <th>Date</th>
+                            <th class="col-md-1">№</th>
+                            <th class="col-md-3">Title</th>
+                            <th class="col-md-6">Text</th>
+                            <th class="col-md-2">Date</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <c:forEach items="${posts}" var="post" >
                             <tr onclick="window.location.href='/blog/${username}/post/${post.postId}'">
                                 <td>${posts.indexOf(post) + 1}</td>
@@ -70,42 +70,30 @@
                                 <td>${post.date}</td>
                             </tr>
                         </c:forEach>
+                        </tbody>
                     </table>
-                    <input id="0071" type="hidden" name="hideId">
-                    <c:choose>
-                        <c:when test="${pages > 1}">
-                            <br>
-                            <input id="007" type="hidden" name="hide" value="${page}">
-                            <c:choose>
-                                <c:when test="${page > 4}">
-                                    <span class="fake-link" id="${1}" onclick="submitData(this.id, '007')">${1}</span> ...
-                                </c:when>
-                            </c:choose>
+                    <c:if test="${pages > 1}">
+                        <ul class="pagination">
+                            <c:if test="${page > 4}">
+                                <li><a href="<c:url value="/blog?page=1"/>">1</a> ...</li>
+                            </c:if>
                             <c:forEach begin="${page > 4 ? page - 2 : 1}" end="${page + 4 > pages ? pages : page + 2}" var="pageId">
-                                <c:choose>
-                                    <c:when test="${page == pageId}">
-                                        <span class="fake-link currentPage" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="fake-link" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span>
-                                    </c:otherwise>
-                                </c:choose>
+                                <li class="${page == pageId ? "active" : ""}"><a href="<c:url value="/blog?page=${pageId}"/>">${pageId}</a></li>
                             </c:forEach>
-                            <c:choose>
-                                <c:when test="${page + 4 <= pages}">
-                                    ... <span class="fake-link" id="${pages}" onclick="submitData(this.id, '007')">${pages}</span>
-                                </c:when>
-                            </c:choose>
-                        </c:when>
-                    </c:choose>
-                </form>
-            </c:otherwise>
-        </c:choose>
+                            <c:if test="${page + 4 <= pages}">
+                                <li>... <a href="<c:url value="/blog?page=${pages}"/>">${pages}</a></li>
+                            </c:if>
+                        </ul>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
 </div>
-<div class="footer">
-    <hr class="footer">
-    © 2017 Blog
-</div>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">@ 2017 Blog</p>
+    </div>
+</footer>
 </body>
 </html>

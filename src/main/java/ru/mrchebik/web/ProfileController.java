@@ -12,7 +12,6 @@ import ru.mrchebik.session.UserSession;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -32,41 +31,36 @@ public class ProfileController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping(value = "/", method = GET)
-    public String getSettingPage(Principal principal,
-                                 Model model) {
-        model.addAttribute("username", principal.getName());
+    public String getSettingPage() {
+        return "Profile";
+    }
+    @RequestMapping(value = "/rename", method = POST)
+    public String renameUser(@RequestParam String username,
+                           Model model) throws ServletException {
+        if (userService.findByUsername(username) == null) {
+            userService.changeUsername(userSession.getUser().getEmail(), username);
+            model.addAttribute("username", username);
+            userSession.getUser().setUsername(username);
+        }
 
         return "Profile";
     }
 
-    @RequestMapping(value = "/", method = POST)
-    public String postSettingPage(@RequestParam(required = false) String username,
-                                  @RequestParam(required = false) String oldPassword,
-                                  @RequestParam(required = false) String oldPasswordUser,
-                                  @RequestParam(required = false) String newPassword,
-                                  @RequestParam(required = false) String email,
-                                  @RequestParam String type,
-                                  HttpServletRequest request,
-                                  Model model) throws ServletException {
-        if (type.equals("username")) {
-            if (userService.findByUsername(username) == null) {
-                userService.changeUsername(userSession.getUser().getEmail(), username);
-                model.addAttribute("username", username);
-                userSession.getUser().setUsername(username);
-                request.login(username, oldPasswordUser);
-            }
-        } else if (type.equals("email")) {
-            try {
-                userService.changeEmail(userSession.getUser().getEmail(), email);
-            } catch (Exception ignored) {
-            }
-        } else {
-            if (bCryptPasswordEncoder.encode(oldPassword).equals(userSession.getUser().getPassword())) {
-                userService.changePassword(userSession.getUser().getEmail(), newPassword);
-            }
+    @RequestMapping(value = "/password", method = POST)
+    public String changePassword(@RequestParam String oldPassword,
+                                 @RequestParam String newPassword) throws ServletException {
+        if (bCryptPasswordEncoder.matches(oldPassword, userSession.getUser().getPassword())) {
+            userService.changePassword(userSession.getUser().getEmail(), newPassword);
         }
 
-        return "redirect:/blog/setting";
+        return "Profile";
+    }
+
+    @RequestMapping(value = "/email", method = POST)
+    public String changeEmail(@RequestParam String newEmail) {
+        userService.changeEmail(userSession.getUser().getEmail(), newEmail);
+
+        return "Profile";
     }
 
     @RequestMapping(value = "/delete", method = GET)

@@ -10,72 +10,77 @@
 <html>
 <head>
     <title>Blog - Add post</title>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/default.css"/>"/>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Boxes.css"/>"/>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
-    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Add.css"/>"/>
-    <script type="text/javascript" src="<c:url value="/resources/js/Title.js"/>"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/layout.css"/>"/>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/textarea.css"/>"/>
+    <script type="text/javascript" src="<c:url value="/resources/js/AddPost.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/logout.js"/>"></script>
-    <style>
-        #box0 {
-            display: block !important;
-        }
-    </style>
 </head>
 <body>
 <form action="<c:url value="/logout"/>" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
-<div class="top">
-    <div class="blog">
-        Blog
-    </div>
-    <div class="bar">
-        <ul id="navbar">
-            <li onclick="window.location.href='/blog/';"><span>Home</span></li>
-            <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
-            <li onclick="window.location.href='/blog/news/';"><span>News</span></li>
-            <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
-            <li onclick="logout()"><span>Logout</span></li>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="<c:url value="/blog"/>">Blog</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="<c:url value="/blog"/>">Home</a></li>
+            <li><a href="/blog/${username}">Global View</a></li>
+            <li><a href="<c:url value="/blog/news"/>">News</a></li>
+            <li><a href="<c:url value="/blog/setting/"/>">Setting</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
     </div>
-</div>
-<div class="center">
-    <div class="postsBox">
-        <c:if test="${maxLevel != -2}">
-            <select name="categories" multiple>
-                <c:forEach items="${categories}" var="category">
-                    <option id="${category.categoryId}">
-                        ${category.name}
-                    </option>
-                </c:forEach>
-            </select>
-        </c:if>
-        <div class="postCreateBox">
-            <form id="form1" method="post">
-                <input id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
-                <textarea id="text" name="text" placeholder="Text">${post.text}</textarea>
-                <input type="hidden" name="categoriesId">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            </form>
-        </div>
-        <div class="menu">
-            <div class="addButton" onclick="checkError()">
-                <c:choose>
-                    <c:when test="${post.title != null}">
-                        Save post
-                    </c:when>
-                    <c:otherwise>
-                        Add post
-                    </c:otherwise>
-                </c:choose>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <c:if test="${categories != '[]'}">
+            <div class="col-md-4 col-md-offset-1">
+                <div class="form-group">
+                    <select multiple class="form-control" name="categories" id="categories">
+                        <c:forEach items="${categories}" var="category">
+                            <option id="${category.categoryId}">
+                                ${category.name}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
             </div>
-        </div>
+        </c:if>
+        <form id="post-form" method="post">
+            <div class="col-md-${categories != '[]' ? '6' : '10'}">
+                <div class="form-group">
+                    <input class="form-control" id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
+                </div>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <div class="form-group">
+                    <textarea class="form-control" id="text" name="text" rows="30" placeholder="Text">${post.text}</textarea>
+                </div>
+            </div>
+            <div class="col-md-2 col-md-offset-5">
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-block" onclick="checkError()">
+                        ${post.title != null ? "Save post" : "Add post"}
+                    </button>
+                </div>
+            </div>
+            <input type="hidden" name="categoriesId">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        </form>
     </div>
 </div>
-<div class="footer">
-    <hr class="footer">
-    © 2017 Blog
-</div>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">@ 2017 Blog</p>
+    </div>
+</footer>
 </body>
 </html>

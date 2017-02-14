@@ -65,7 +65,7 @@ public class PostController {
 
         long postId = postService.findLastPostId(userSession.getUser().getUserId());
         for (Reader reader : readerService.findAllMain(userSession.getUser().getUserId())) {
-            new Thread(new Run(userService.findOne(reader.getReaderId()).getEmail(), "/blog/" + userSession.getUser().getUsername() + "/post/" + postId)).start();
+            new Thread(new Run(userService.findOne(reader.getReaderId()).getEmail(), userSession.getUser().getUsername(), "/blog/" + userSession.getUser().getUsername() + "/post/" + postId)).start();
         }
 
         return "redirect:/blog/";

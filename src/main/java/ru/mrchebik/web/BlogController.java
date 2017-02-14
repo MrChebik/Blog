@@ -40,9 +40,9 @@ public class BlogController {
     @Resource
     private ReaderService readerService;
 
-    @RequestMapping(value = { "/", "/{username}" }, method = GET)
+    @RequestMapping(value = { "", "/{username}" }, method = GET)
     public String notes(@PathVariable(required = false) String username,
-                        @RequestParam(value = "hide", defaultValue = "1") int page,
+                        @RequestParam(defaultValue = "1") int page,
                         Principal principal,
                         Model model) {
         if (userSession.getUser() == null) {
@@ -102,7 +102,7 @@ public class BlogController {
     @RequestMapping(value = "/{username}/post/{id}", method = GET)
     public String postPage(@PathVariable String id,
                            @PathVariable String username,
-                           @RequestParam(value = "hide", defaultValue = "1") int page,
+                           @RequestParam(defaultValue = "1") int page,
                            Model model) {
         int idFromString = Integer.parseInt(id);
 
@@ -141,23 +141,23 @@ public class BlogController {
     public String addComment(@PathVariable String id,
                              @PathVariable String username,
                              @RequestParam String text,
-                             @RequestParam(value = "hide") int page) {
+                             @RequestParam int page) {
         commentService.addComment(new Comment(userSession.getUser(), postService.findPost(Integer.parseInt(id)), text, new Date()));
 
-        return "redirect:/blog/" + username + "/post/" + id + "?hide=" + page;
+        return "redirect:/blog/" + username + "/post/" + id + "?page=" + page;
     }
 
     @RequestMapping(value = "/{username}/subscribe", method = GET)
-    public String subscribe(@RequestParam String user) {
-        readerService.add(new Reader(userSession.getUser().getUserId(), userService.findByUsername(user)));
+    public String subscribe(@PathVariable String username) {
+        readerService.add(new Reader(userSession.getUser().getUserId(), userService.findByUsername(username)));
 
-        return "redirect:/blog/" + user + "/";
+        return "redirect:/blog/" + username + "/";
     }
 
     @RequestMapping(value = "/{username}/unsubscribe", method = GET)
-    public String unsubscribe(@RequestParam String user) {
-        readerService.delete(readerService.findOne(userService.findByUsername(user).getUserId(), userSession.getUser().getUserId()).getId());
+    public String unsubscribe(@PathVariable String username) {
+        readerService.delete(readerService.findOne(userService.findByUsername(username).getUserId(), userSession.getUser().getUserId()).getId());
 
-        return "redirect:/blog/" + user + "/";
+        return "redirect:/blog/" + username + "/";
     }
 }

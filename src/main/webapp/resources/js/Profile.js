@@ -2,36 +2,47 @@
  * Created by mrchebik on 02.02.17.
  */
 var error = 1;
+var password = $('#passwordConfirm');
 
-function checkSetting(elem) {
-    if (elem.name == 'username' || elem.name == 'oldPasswordUser') {
-        if (elem.value.length < 4 || elem.value.length > 50) {
-            elem.style.borderColor = 'red';
+function checkSetting(element) {
+    var elem = $('#' + element);
+
+    if (element == 'username' || element == 'oldPassword' || element == 'newPassword') {
+        if (elem.val().length < 4 || elem.val().length > 60) {
+            elem.css("borderColor", "red");
             error = 1;
         } else {
-            elem.style.borderColor = "#9999CC";
+            elem.css("borderColor", "darkgreen");
             error = 0;
         }
-    } else if (elem.name == 'email') {
-        if (elem.value.indexOf('@') == -1) {
-            elem.style.borderColor = "red";
+
+        if (id == 'newPassword') {
+            if (password.val() != elem.val() && elem.val() != '') {
+                password.css("borderColor", "red");
+                error = 1;
+            } else {
+                password.css("borderColor", "darkgreen");
+                error = 0;
+            }
+        }
+    } else if (element == 'newEmail') {
+        if (elem.val().indexOf('@') == -1) {
+            elem.css("borderColor", "red");
             error = 1;
         } else {
-            elem.style.borderColor = "darkgreen";
+            elem.css("borderColor", "darkgreen");
             error = 0;
         }
     } else {
-        var passwordConfirm = document.getElementsByName('passwordConfirm')[0];
-
-        if (passwordConfirm.value != document.getElementsByName('newPassword')[0].value && passwordConfirm.value != '') {
-            passwordConfirm.style.borderColor = 'red';
+        if (elem.val() != $('#password').val() && elem.val() != '') {
+            elem.css("borderColor", "red");
             error = 1;
         } else {
-            passwordConfirm.style.borderColor = 'darkgreen';
+            elem.css("borderColor", "darkgreen");
             error = 0;
         }
 
-        if (passwordConfirm.value == '') {
+        if (elem.val() == '') {
             error = 1;
         }
     }
@@ -39,8 +50,7 @@ function checkSetting(elem) {
 
 function checkError(info) {
     if (error == 0) {
-        document.getElementsByName("type")[0].value = info;
-        document.getElementById("form1").submit();
+        document.getElementById(info).submit();
     } else {
         alert("Error");
     }

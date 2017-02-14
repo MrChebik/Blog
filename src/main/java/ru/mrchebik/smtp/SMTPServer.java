@@ -1,11 +1,7 @@
 package ru.mrchebik.smtp;
 
-import ru.mrchebik.session.GuestSession;
-import ru.mrchebik.session.UserSession;
 import ru.mrchebik.util.EmailUtil;
-import ru.mrchebik.util.RandomKeyUtil;
 
-import javax.annotation.Resource;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -16,14 +12,11 @@ import java.util.Properties;
  * Created by mrchebik on 17.01.17.
  */
 public class SMTPServer {
-    @Resource
-    private UserSession userSession;
-    @Resource
-    private GuestSession guestSession;
+    private Session session;
+    private String fromEmail = "your-email";
 
-    public SMTPServer(String toEmail) throws IOException {
-        final String fromEmail = "YourEmail";
-        final String password = "password";
+    public SMTPServer() throws IOException {
+        String password = "your-password";
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.yandex.ru");
@@ -39,44 +32,24 @@ public class SMTPServer {
             }
         };
 
-        Session session = Session.getDefaultInstance(props, auth);
+        session = Session.getDefaultInstance(props, auth);
+    }
 
-        guestSession.setCode(RandomKeyUtil.generateCode());
-        guestSession.setEmail(toEmail);
-
+    public void senderCode(String toEmail, String code) {
         EmailUtil.sendEmail(session,
                 fromEmail,
                 toEmail,
                 "NoReply - verify code",
                 "You sent a request to reset password.\n" +
-                        "Your code: " + guestSession.getCode() + "\n" +
+                        "Your code: " + code + "\n" +
                         "If you didn't do it, please ignore this message.");
     }
 
-    public SMTPServer(String toEmail, String url) throws IOException {
-        final String fromEmail = "YourEmail";
-        final String password = "password";
-
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.yandex.ru");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-
-        Authenticator auth = new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(fromEmail, password);
-            }
-        };
-
-        Session session = Session.getDefaultInstance(props, auth);
-
+    public void senderNews(String toEmail, String username, String url) {
         EmailUtil.sendEmail(session,
                 fromEmail,
                 toEmail,
-                "NoReply - new post from " + userSession.getUser().getUsername(),
-                "Your writer wrote a new post. Read more: " + url);
+                "NoReply - new post from " + username,
+                "Your writer '" + username + "' wrote a new post. Read more: " + url);
     }
 }

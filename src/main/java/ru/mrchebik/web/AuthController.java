@@ -7,6 +7,7 @@ import ru.mrchebik.model.User;
 import ru.mrchebik.run.Run;
 import ru.mrchebik.service.UserService;
 import ru.mrchebik.session.GuestSession;
+import ru.mrchebik.util.RandomKeyUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -35,7 +36,7 @@ public class AuthController {
         try {
             userService.add(userForm);
         } catch (Exception e) {
-            return "redirect:/?errorReg";
+            return "redirect:/?error";
         }
         request.login(userForm.getUsername(), password);
 
@@ -48,31 +49,30 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/forgot", method = POST)
-    public String sendDataToEmail(@RequestParam(value = "email") String email) {
+    public String sendDataToEmail(@RequestParam String email,
+                                  Model model) {
         if (userService.findByEmail(email) != null) {
-            new Thread(new Run(email)).start();
+            guestSession.setEmail(email);
+            guestSession.setCode(RandomKeyUtil.generateCode());
+
+            new Thread(new Run(email, guestSession.getCode())).start();
         }
+        model.addAttribute("code", "not-null");
 
-        return "redirect:/auth/check";
-    }
-
-    @RequestMapping(value = "/check", method = GET)
-    public String GetPageCheck() {
-        return "CheckCode";
+        return "Forgot";
     }
 
     @RequestMapping(value = "/check", method = POST)
-    public String checkCodeFromEmail(@RequestParam(value = "code") String code) {
+    public String checkCodeFromEmail(@RequestParam String code,
+                                     Model model) {
         if (guestSession.getCode().equalsIgnoreCase(code)) {
-            return "redirect:/auth/newPassword/" + guestSession.getCode();
+            model.addAttribute("checkedCode", guestSession.getCode());
+            model.addAttribute("password", "not-null");
+
+            return "Forgot";
         }
 
-        return "redirect:/auth/forgot";
-    }
-
-    @RequestMapping(value = "/newPassword/{code}", method = GET)
-    public String GetPagePassword() {
-        return "NewPassword";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/newPassword/{code}", method = POST)

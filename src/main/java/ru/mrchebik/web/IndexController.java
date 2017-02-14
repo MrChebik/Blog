@@ -36,7 +36,7 @@ public class IndexController {
 
     @RequestMapping(value = {"", "blog/news"}, method = GET)
     public String indexPage(@PathVariable(required = false) String username,
-                            @RequestParam(value = "hide", defaultValue = "1") int page,
+                            @RequestParam(defaultValue = "1") int page,
                             @RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "errorReg", required = false) String errorReg,
                             @RequestParam(value = "logout", required = false) String logout,

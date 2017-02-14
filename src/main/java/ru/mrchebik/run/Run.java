@@ -9,27 +9,35 @@ import java.io.IOException;
  */
 public class Run implements Runnable {
     private SMTPServer smtpServer;
+
     private String email;
+    private String code;
+    private String username;
     private String url;
 
-    public Run(String email) {
+    public Run(String email, String code) {
         this.email = email;
+        this.code = code;
     }
 
-    public Run(String email, String url) {
+    public Run(String email, String username, String url) {
         this.email = email;
+        this.username = username;
         this.url = url;
     }
 
     @Override
     public void run() {
         try {
-            if (url == null) {
-                smtpServer = new SMTPServer(email);
-            } else {
-                smtpServer = new SMTPServer(email, url);
-            }
-        } catch (IOException ignored) {
+            smtpServer = new SMTPServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (url == null) {
+            smtpServer.senderCode(email, code);
+        } else {
+            smtpServer.senderNews(email, username, url);
         }
     }
 }

@@ -32,7 +32,7 @@ public class CategoryController {
 
     @RequestMapping(value = "/{categoryId}", method = GET)
     public String getCategoriesPage(@PathVariable(required = false) String categoryId,
-                                    @RequestParam(value = "hide", defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "1") int page,
                                     Model model) {
         String name = "/";
         long level = -1, parentId = -1;

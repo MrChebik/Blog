@@ -16,37 +16,61 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/layout.css"/>"/>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/logo.css"/>"/>
+    <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/form.css"/>"/>
     <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/News.css"/>"/>
-    <script type="text/javascript" src="<c:url value="/resources/js/logout.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/News.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/logout.js"/>"></script>
+    <c:if test="${principal == null}">
+        <style>
+            nav {
+                display: none;
+            }
+
+            body {
+                padding-top: 0;
+            }
+        </style>
+    </c:if>
     <c:if test="${principal != null}">
-        <link type="text/css" rel="stylesheet" href="<c:url value="/resources/css/Blog.css"/>"/>
+        <style>
+            .logo {
+                display: none;
+            }
+
+            .form {
+                display: none;
+            }
+        </style>
     </c:if>
 </head>
 <body>
 <form action="<c:url value="/logout"/>" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
-    <div class="top" style="display: none">
-        <div class="blog">
-            Blog
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="<c:url value="/blog"/>">Blog</a>
         </div>
-        <div class="bar">
-            <ul id="navbar">
-                <li onclick="window.location.href='/blog/';"><span>Home</span></li>
-                <li onclick="window.location.href='/blog/${username}/';"><span>View</span></li>
-                <li onclick="window.location.href='/blog/news';"><span>News</span></li>
-                <li onclick="window.location.href='/blog/setting/';"><span>Setting</span></li>
-                <li onclick="logout()"><span>Logout</span></li>
-            </ul>
-        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="<c:url value="/blog"/>">Home</a></li>
+            <li><a href="/blog/${username}">Global View</a></li>
+            <li class="active"><a href="#">News</a></li>
+            <li><a href="<c:url value="/blog/setting/"/>">Setting</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
     </div>
+</nav>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 logo">
             Blog
         </div>
-        <div class="col-md-8 col-md-offset-1">
+        <div class="col-md-8 col-md-offset-${principal == null ? "1" : "2"}">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="panel panel-info">
@@ -68,61 +92,44 @@
                     </div>
                 </div>
             </div>
-            <c:if test="${principal != null}">
-                <div class="postsBox">
-                    <c:if test="${posts.size() != 0}">
-                        <form id="form2" method="get">
-                            <c:forEach items="${posts}" var="post" >
-                                <div class="postBox">
-                                        ${post.user.username}
-                                    <div class="titleBox fake-link" onclick="window.location.href='/blog/${post.user.username}/post/${post.postId}'">
-                                            ${post.title}
-                                    </div>
-                                    <hr>
-                                    <div class="textBox">
-                                            ${post.text}
-                                    </div>
-                                    <hr class="date">
-                                    <div class="dateBox">
-                                            ${post.date}
-                                    </div>
-                                    <hr class="date">
-                                </div>
+        </div>
+        <c:if test="${principal != null}">
+            <c:if test="${posts.size() != 0}">
+                <c:forEach items="${posts}" var="post" >
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                ${post.user.username}<br>
+                                <a href="/blog/${post.user.username}/post/${post.postId}" class="btn btn-link" role="button">${post.title}</a><br>
+                                ${categoriesPath.get(post.postId)}
+                            </div>
+                            <div class="panel-body">
+                                ${post.text}
+                            </div>
+                            <div class="panel-footer">
+                                ${post.date}
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+                <div class="col-md-8 col-md-offset-2">
+                    <c:if test="${pages > 1}">
+                        <ul class="pagination">
+                            <c:if test="${page > 4}">
+                                <li><a href="<c:url value="/blog/news?page=1"/>">1</a> ...</li>
+                            </c:if>
+                            <c:forEach begin="${page > 4 ? page - 2 : 1}" end="${page + 4 > pages ? pages : page + 2}" var="pageId">
+                                <li class="${page == pageId ? "active" : ""}"><a href="<c:url value="/blog/news?page=${pageId}"/>">${pageId}</a></li>
                             </c:forEach>
-                            <c:choose>
-                                <c:when test="${pages > 1}">
-                                    <br>
-                                    <ul class="pagination">
-                                        <input id="007" type="hidden" name="hide" value="${page}">
-                                        <c:choose>
-                                            <c:when test="${page > 4}">
-                                                <li><span class="fake-link" id="${1}" onclick="submitData(this.id, '007')">${1}</span> ...</li>
-                                            </c:when>
-                                        </c:choose>
-                                        <c:forEach begin="${page > 4 ? page - 2 : 1}" end="${page + 4 > pages ? pages : page + 2}" var="pageId">
-                                            <c:choose>
-                                                <c:when test="${page == pageId}">
-                                                    <li><span class="fake-link currentPage" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span></li>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li><span class="fake-link" id="${pageId}" onclick="submitData(this.id, '007')">${pageId}</span></li>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                        <c:choose>
-                                            <c:when test="${page + 4 <= pages}">
-                                                <li>... <span class="fake-link" id="${pages}" onclick="submitData(this.id, '007')">${pages}</span></li>
-                                            </c:when>
-                                        </c:choose>
-                                    </ul>
-                                </c:when>
-                            </c:choose>
-                        </form>
+                            <c:if test="${page + 4 <= pages}">
+                                <li>... <a href="<c:url value="/blog/news?page=${pages}"/>">${pages}</a></li>
+                            </c:if>
+                        </ul>
                     </c:if>
                 </div>
             </c:if>
-        </div>
-        <div class="col-md-2">
+        </c:if>
+        <div class="col-md-2 form">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
@@ -143,7 +150,7 @@
                         </c:if>
                         <c:if test="${param.logout != null}">
                             <div class="alert alert-success">
-                                <strong>Success!</strong> You have been logged out.
+                                You have been logged out.
                             </div>
                         </c:if>
                         <div class="form-group">
@@ -162,14 +169,12 @@
                             </div>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                        <div class="form-group no-margin-bottom">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="text-center">
-                                        <a href="<c:url value="/auth/forgot"/>" class="btn btn-link" role="button">
-                                            Forgot password
-                                        </a>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <a href="<c:url value="/auth/forgot"/>" class="btn btn-link" role="button">
+                                        Forgot password
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -198,13 +203,11 @@
                         <div class="form-group">
                             <input class="form-control" id="register-passwordConfirm" type="password" name="passwordConfirm" placeholder="Password Confirm" oninput="check(this.id)">
                         </div>
-                        <div class="form-group no-margin-bottom">
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <button type="button" class="btn btn-success btn-block" onclick="checkError('register-form')">
-                                        Sign up
-                                    </button>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <button type="button" class="btn btn-success btn-block" onclick="checkError('register-form')">
+                                    Sign up
+                                </button>
                             </div>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -213,10 +216,11 @@
             </div>
         </div>
     </div>
-    <div class="footer navbar-fixed-bottom">
-        <hr>
-        © 2017 Blog
-    </div>
 </div>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">@ 2017 Blog</p>
+    </div>
+</footer>
 </body>
 </html>

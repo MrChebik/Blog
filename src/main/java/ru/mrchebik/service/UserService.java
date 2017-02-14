@@ -12,7 +12,6 @@ public interface UserService {
     @PreAuthorize("hasRole('ROLE_USER')")
     void changeUsername(String email, String username);
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     void changePassword(String email, String password);
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -21,7 +20,6 @@ public interface UserService {
     @PreAuthorize("hasRole('ROLE_USER')")
     User findOne(long userId);
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     User findByEmail(String email);
 
     @PreAuthorize("hasRole('ROLE_USER')")

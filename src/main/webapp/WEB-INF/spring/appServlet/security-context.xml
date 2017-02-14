@@ -20,7 +20,7 @@
         <logout invalidate-session="true"
                 logout-success-url="/?logout"/>
         <form-login
-                default-target-url="/blog/"
+                default-target-url="/blog"
                 login-page="/"
                 login-processing-url="/j_spring_security_check"
                 username-parameter="username"

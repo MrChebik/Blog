@@ -22,33 +22,46 @@ $(function() {
     });
 });
 
+var password = $('#register-passwordConfirm');
+
 function check(id) {
+    var element = $('#' + id);
     if (id == 'register-username' || id == 'login-username' || id == 'login-password' || id == 'register-password') {
-        if ($('#' + id).val().length < 4 || $('#' + id).val().length > 60) {
-            $('#' + id).css("borderColor", "red");
+        if (element.val().length < 4 || element.val().length > 60) {
+            element.css("borderColor", "red");
             error = 1;
         } else {
-            $('#' + id).css("borderColor", "darkgreen");
+            element.css("borderColor", "darkgreen");
             error = 0;
         }
+        
+        if (id == 'register-password') {
+            if (password.val() != element.val() && element.val() != '') {
+                password.css("borderColor", "red");
+                error = 1;
+            } else {
+                password.css("borderColor", "darkgreen");
+                error = 0;
+            }
+        }
     } else if (id == 'register-passwordConfirm') {
-        if ($('#' + id).val() != $('#register-password').val() && $('#' + id) != '') {
-            $('#' + id).css("borderColor", "red");
+        if (element.val() != $('#register-password').val() && element.val() != '') {
+            element.css("borderColor", "red");
             error = 1;
         } else {
-            $('#' + id).css("borderColor", "darkgreen");
+            element.css("borderColor", "darkgreen");
             error = 0;
         }
 
-        if ($('#' + id).val() == '') {
+        if (element.val() == '') {
             error = 1;
         }
     } else {
-        if ($('#' + id).val().indexOf('@') == -1) {
-            $('#' + id).css("borderColor", "red");
+        if (element.val().indexOf('@') == -1) {
+            element.css("borderColor", "red");
             error = 1;
         } else {
-            $('#' + id).css("borderColor", "darkgreen");
+            element.css("borderColor", "darkgreen");
             error = 0;
         }
     }
@@ -58,6 +71,6 @@ function checkError(id) {
     if (error == 0) {
         $('#' + id).submit();
     } else {
-        alert("Check your login and password, they must not be red or empty.");
+        alert("Check your fields, they must not be red or empty.");
     }
 }
