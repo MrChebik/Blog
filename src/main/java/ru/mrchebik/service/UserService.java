@@ -18,7 +18,7 @@ public interface UserService {
     void changeEmail(String email, String newEmail);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    User findOne(long userId);
+    User findById(long userId);
 
     User findByEmail(String email);
 

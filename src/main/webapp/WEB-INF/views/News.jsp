@@ -76,6 +76,7 @@
                     <div class="panel panel-info">
                         <div class="panel-heading">News</div>
                         <div class="panel-body">
+                            <b>25.02.17</b> — Added cache.<br>
                             <b>05.02.17</b> — Added ability to add many categories to the post.<br>
                             <b>04.02.17</b> — Added ability to subscribe to the other user and see their posts in the news page, notify about new posts from writers, logout.<br>
                             <b>03.02.17</b> — Added ability to edit your profile.<br>

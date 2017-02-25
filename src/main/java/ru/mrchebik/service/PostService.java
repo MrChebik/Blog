@@ -16,10 +16,10 @@ public interface PostService {
     long findLastPostId(long userId);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    List<Post> findPosts(long userId);
+    Post findPost(long postId);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    Post findPost(long postId);
+    List<Post> findPosts(long userId);
 
     @PreAuthorize("hasRole('ROLE_USER')")
     void remove(long id);

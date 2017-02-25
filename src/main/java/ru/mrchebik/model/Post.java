@@ -1,6 +1,7 @@
 package ru.mrchebik.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "posts")
-public class Post implements Comparable<Post> {
+public class Post implements Comparable<Post>, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long postId;

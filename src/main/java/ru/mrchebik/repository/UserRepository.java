@@ -4,11 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.mrchebik.model.User;
 
 /**
  * Created by mrchebik on 14.01.17.
  */
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("from ru.mrchebik.model.User where username = :username")
     User findByName(@Param("username") String username);

@@ -1,6 +1,5 @@
 package ru.mrchebik.service.impl;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mrchebik.model.Reader;
@@ -14,15 +13,14 @@ import java.util.List;
  * Created by mrchebik on 03.02.17.
  */
 @Service
-@Repository
 @Transactional
 public class ReaderServiceImpl implements ReaderService {
     @Resource
     private ReaderRepository readerRepository;
 
     @Override
-    public void add(Reader reader) {
-        readerRepository.saveAndFlush(reader);
+    public Reader add(Reader reader) {
+        return readerRepository.saveAndFlush(reader);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public void delete(long id) {
+    public void remove(long id) {
         readerRepository.delete(id);
     }
 }

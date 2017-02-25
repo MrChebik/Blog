@@ -2,7 +2,6 @@ package ru.mrchebik.service.impl;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mrchebik.model.User;
@@ -16,7 +15,6 @@ import javax.annotation.Resource;
  * Created by mrchebik on 14.01.17.
  */
 @Service
-@Repository
 @Transactional
 public class UserServiceImpl implements UserService {
     @Resource
@@ -51,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findOne(long userId) {
+    public User findById(long userId) {
         return userRepository.findOne(userId);
     }
 

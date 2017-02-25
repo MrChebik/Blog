@@ -55,7 +55,7 @@
             </div>
         </c:if>
         <form id="post-form" method="post">
-            <div class="col-md-${categories != '[]' ? '6' : '10'}">
+            <div class="col-md-${categories != '[]' ? '6' : '10 col-md-offset-1'}">
                 <div class="form-group">
                     <input class="form-control" id="title" type="text" name="title" oninput="check()" placeholder="Title" value="${post.title}" onload="check()">
                 </div>

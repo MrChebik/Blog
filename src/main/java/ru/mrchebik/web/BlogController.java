@@ -142,7 +142,7 @@ public class BlogController {
                              @PathVariable String username,
                              @RequestParam String text,
                              @RequestParam int page) {
-        commentService.addComment(new Comment(userSession.getUser(), postService.findPost(Integer.parseInt(id)), text, new Date()));
+        commentService.add(new Comment(userSession.getUser(), postService.findPost(Integer.parseInt(id)), text, new Date()));
 
         return "redirect:/blog/" + username + "/post/" + id + "?page=" + page;
     }
@@ -156,7 +156,7 @@ public class BlogController {
 
     @RequestMapping(value = "/{username}/unsubscribe", method = GET)
     public String unsubscribe(@PathVariable String username) {
-        readerService.delete(readerService.findOne(userService.findByUsername(username).getUserId(), userSession.getUser().getUserId()).getId());
+        readerService.remove(readerService.findOne(userService.findByUsername(username).getUserId(), userSession.getUser().getUserId()).getId());
 
         return "redirect:/blog/" + username + "/";
     }

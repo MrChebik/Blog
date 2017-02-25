@@ -117,7 +117,9 @@ public class CategoryController {
     @RequestMapping(value = "/edit", method = GET)
     public String removeCategory(@RequestParam String id,
                                  @RequestParam String name) {
-        categoryService.edit(name, Long.parseLong(id));
+        Category category = categoryService.findById(Long.parseLong(id));
+        category.setName(name);
+        categoryService.add(category);
 
         return "redirect:/blog/categories/-1";
     }

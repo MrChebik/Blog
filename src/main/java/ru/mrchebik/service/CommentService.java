@@ -10,17 +10,14 @@ import java.util.List;
  */
 public interface CommentService {
     @PreAuthorize("hasRole('ROLE_USER')")
-    Comment addComment(Comment comment);
+    Comment add(Comment comment);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    void editComment(Comment comment);
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    Comment findComment(long id);
+    Comment findById(long id);
 
     @PreAuthorize("hasRole('ROLE_USER')")
     List<Comment> findComments(long id);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    void removeComment(long id);
+    void remove(long id);
 }

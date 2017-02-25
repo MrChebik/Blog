@@ -65,7 +65,7 @@ public class PostController {
 
         long postId = postService.findLastPostId(userSession.getUser().getUserId());
         for (Reader reader : readerService.findAllMain(userSession.getUser().getUserId())) {
-            new Thread(new Run(userService.findOne(reader.getReaderId()).getEmail(), userSession.getUser().getUsername(), "/blog/" + userSession.getUser().getUsername() + "/post/" + postId)).start();
+            new Thread(new Run(userService.findById(reader.getReaderId()).getEmail(), userSession.getUser().getUsername(), "/blog/" + userSession.getUser().getUsername() + "/post/" + postId)).start();
         }
 
         return "redirect:/blog/";
@@ -111,7 +111,7 @@ public class PostController {
                                   @PathVariable String postId,
                                   Model model) {
         model.addAttribute("post", postService.findPost(Long.parseLong(postId)));
-        model.addAttribute("commentEdit", commentService.findComment(Long.parseLong(id)));
+        model.addAttribute("commentEdit", commentService.findById(Long.parseLong(id)));
 
         return "Post";
     }
@@ -121,7 +121,9 @@ public class PostController {
                                   @RequestParam String id,
                                   @RequestParam String text,
                                   @RequestParam String username) {
-        commentService.editComment(new Comment(Long.parseLong(id), text));
+        Comment comment = commentService.findById(Long.parseLong(id));
+        comment.setText(text);
+        commentService.add(comment);
 
         return "redirect:/blog/" + username + "/post/" + postId;
     }
@@ -130,7 +132,7 @@ public class PostController {
     public String removeComment(@RequestParam String username,
                                 @RequestParam String id,
                                 @PathVariable String postId) {
-        commentService.removeComment(Long.parseLong(id));
+        commentService.remove(Long.parseLong(id));
 
         return "redirect:/blog/" + username + "/post/" + postId;
     }

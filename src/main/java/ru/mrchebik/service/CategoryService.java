@@ -10,10 +10,7 @@ import java.util.List;
  */
 public interface CategoryService {
     @PreAuthorize("hasRole('ROLE_USER')")
-    void add(Category category);
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    void edit(String name, long categoryId);
+    Category add(Category category);
 
     @PreAuthorize("hasRole('ROLE_USER')")
     Category findById(long id);

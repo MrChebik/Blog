@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ReaderService {
     @PreAuthorize("hasRole('ROLE_USER')")
-    void add(Reader reader);
+    Reader add(Reader reader);
 
     @PreAuthorize("hasRole('ROLE_USER')")
     Reader findOne(long userIdMain, long userIdFollower);
@@ -22,5 +22,5 @@ public interface ReaderService {
     List<Reader> findAllFollower(long userIdMain);
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    void delete(long id);
+    void remove(long id);
 }

@@ -1,0 +1,30 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true" monitoring="autodetect" dynamicConfig="true">
+    <cache name="categories"
+           maxEntriesLocalHeap="5000"
+           maxEntriesLocalDisk="10000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LFU">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+    <cache name="post"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="100000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LFU">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+    <cache name="posts"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="1000000"
+           eternal="true"
+           memoryStoreEvictionPolicy="LFU">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+    <cache name="comments"
+           maxEntriesLocalHeap="1"
+           maxEntriesLocalDisk="1000000000"
+           eternal="true">
+    </cache>
+</ehcache>
